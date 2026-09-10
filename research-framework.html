@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Research Framework — from a question to a filed claim | Walkthrough</title>
+<style>
+  :root{
+    --bg:#020617; --panel:#0f172a; --panel2:#111c33; --border:#1e293b;
+    --fg:#e2e8f0; --muted:#94a3b8; --dim:#64748b;
+    --cyan:#22d3ee; --emerald:#34d399; --violet:#a78bfa; --amber:#fbbf24;
+    --rose:#fb7185; --orange:#fb923c; --slate:#94a3b8;
+    --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --font:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:76px}
+  body{background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.6;overflow-x:hidden}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 26px}
+  .progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--violet));width:0;z-index:120;transition:width .12s linear}
+  .topbar{position:sticky;top:0;z-index:110;background:rgba(2,6,23,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
+  .brand{font-weight:800;letter-spacing:.3px;font-size:15px;white-space:nowrap}
+  .brand .sparkle{color:var(--cyan)}
+  .topnav{display:flex;gap:4px;flex-wrap:wrap}
+  .topnav a{color:var(--muted);font-size:12.5px;padding:7px 11px;border-radius:8px;text-decoration:none;font-weight:600;transition:.15s;white-space:nowrap}
+  .topnav a:hover{color:var(--fg);background:var(--panel2)}
+  .topnav a.active{color:var(--cyan);background:rgba(34,211,238,.1)}
+  .hamb{display:none;background:none;border:1px solid var(--border);color:var(--cyan);border-radius:8px;padding:6px 10px;font-size:16px;cursor:pointer}
+  .hero{position:relative;overflow:hidden;padding:88px 0 84px}
+  .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(1000px 420px at 15% -10%,rgba(34,211,238,.14),transparent 60%),radial-gradient(820px 340px at 90% 0%,rgba(167,139,250,.13),transparent 60%),radial-gradient(600px 300px at 50% 110%,rgba(52,211,153,.09),transparent 60%)}
+  .hero .wrap{position:relative}
+  .hero .overline{font-family:var(--mono);color:var(--cyan);font-size:12.5px;letter-spacing:3px;text-transform:uppercase;margin-bottom:18px}
+  .hero h1{font-size:clamp(32px,5.8vw,56px);line-height:1.05;letter-spacing:-1px;margin-bottom:20px;font-weight:800;max-width:950px}
+  .hero h1 .grad{background:linear-gradient(92deg,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{max-width:840px;color:var(--muted);font-size:17.5px;margin-bottom:30px}
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:34px}
+  .chip{font-family:var(--mono);font-size:12px;padding:8px 15px;border:1px solid var(--border);border-radius:999px;background:var(--panel);color:var(--fg)}
+  .chip b{color:var(--cyan);font-weight:600}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:10px;font-weight:700;font-size:15px;text-decoration:none;transition:.15s;border:none;cursor:pointer}
+  .btn-primary{background:linear-gradient(90deg,var(--cyan),var(--violet));color:#020617}
+  .btn-primary:hover{filter:brightness(1.12);transform:translateY(-2px)}
+  .btn-ghost{border:1px solid var(--border);color:var(--fg);background:var(--panel)}
+  .btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px)}
+  section{padding:56px 0;border-bottom:1px solid var(--border);scroll-margin-top:76px}
+  .sect-label{font-family:var(--mono);color:var(--cyan);font-size:12.5px;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px}
+  h2{font-size:clamp(24px,3.4vw,34px);font-weight:800;letter-spacing:-.5px;margin-bottom:12px}
+  .sect-sub{color:var(--muted);max-width:900px;font-size:15.5px;margin-bottom:34px}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px}
+  .grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:22px 24px;display:flex;flex-direction:column;gap:10px;transition:.18s}
+  .card:hover{border-color:var(--cyan);transform:translateY(-3px);box-shadow:0 12px 30px -12px rgba(34,211,238,.25)}
+  .card .ico{font-size:26px}
+  .card h3{font-size:17px;font-weight:700}
+  .card p{color:var(--muted);font-size:13.8px;flex:1}
+  .card .tag{font-family:var(--mono);font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--cyan)}
+  .icon-cyan{color:var(--cyan)}.icon-violet{color:var(--violet)}.icon-emerald{color:var(--emerald)}.icon-amber{color:var(--amber)}.icon-rose{color:var(--rose)}.icon-orange{color:var(--orange)}.icon-slate{color:var(--slate)}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .tab{font-family:var(--mono);font-size:12.5px;padding:9px 16px;border-radius:9px;border:1px solid var(--border);background:var(--panel);color:var(--muted);cursor:pointer;transition:.15s;font-weight:600}
+  .tab:hover{color:var(--fg);border-color:var(--dim)}
+  .tab.active{background:linear-gradient(90deg,var(--cyan),var(--violet));color:#020617;border-color:transparent;font-weight:700}
+  .tabpane{display:none;animation:fade .35s ease}
+  .tabpane.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .steps{margin-top:10px}
+  .step{display:flex;gap:18px;position:relative;padding-bottom:32px}
+  .step:not(:last-child)::before{content:"";position:absolute;left:23px;top:46px;bottom:0;width:2px;background:var(--border)}
+  .step .num{width:48px;height:48px;flex:0 0 48px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#020617;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:18px;font-family:var(--mono)}
+  .step h3{font-size:17px;font-weight:700;margin:6px 0 6px}
+  .step p{color:var(--muted);font-size:14px;max-width:760px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--panel);border-radius:12px;overflow:hidden}
+  th{background:var(--panel2);color:var(--cyan);text-align:left;font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;padding:12px 16px}
+  td{padding:12px 16px;border-top:1px solid var(--border);color:var(--fg);vertical-align:top}
+  td.mono,td code,.mono{font-family:var(--mono);font-size:12px}
+  .table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border)}
+  .badge{display:inline-block;font-family:var(--mono);font-size:10.5px;padding:3px 9px;border-radius:999px;margin:2px 2px 0 0}
+  .b-cyan{background:rgba(34,211,238,.15);color:var(--cyan)}.b-green{background:rgba(52,211,153,.15);color:var(--emerald)}
+  .b-violet{background:rgba(167,139,250,.15);color:var(--violet)}.b-amber{background:rgba(251,191,36,.15);color:var(--amber)}.b-rose{background:rgba(251,113,133,.15);color:var(--rose)}
+  .b-slate{background:rgba(148,163,184,.15);color:var(--slate)}
+  .ribbon{background:linear-gradient(90deg,rgba(34,211,238,.06),rgba(167,139,250,.06));border:1px solid var(--border);border-radius:14px;padding:22px 26px;margin:26px 0}
+  .ribbon h3{font-size:16px;margin-bottom:8px}
+  .ribbon p{color:var(--muted);font-size:13.8px}
+  .ribbon.warn{background:linear-gradient(90deg,rgba(251,191,36,.07),rgba(251,113,133,.05));border-color:rgba(251,191,36,.3)}
+  .ribbon.warn h3{color:var(--amber)}
+  .ribbon.security{background:linear-gradient(90deg,rgba(52,211,153,.07),rgba(34,211,238,.05));border-color:rgba(52,211,153,.3)}
+  .ribbon.security h3{color:var(--emerald)}
+  .quote{border-left:3px solid var(--cyan);padding:14px 22px;background:var(--panel);border-radius:0 12px 12px 0;margin:26px 0;color:var(--muted);font-size:15.5px;font-style:italic}
+  .quote b{color:var(--fg);font-style:normal}
+  .diagram{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:24px;text-align:center}
+  .footnote{color:var(--dim);font-size:12.5px;margin-top:18px}
+  .footer{padding:44px 0;color:var(--dim);font-size:12.8px}
+  .footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--panel2);border:1px solid var(--cyan);color:var(--fg);padding:12px 22px;border-radius:10px;font-size:13.5px;z-index:200;opacity:0;transition:.3s;box-shadow:0 10px 30px -10px rgba(0,0,0,.6);font-family:var(--mono)}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  /* pipeline */
+  .pipe{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .pnode{flex:1 1 190px;min-width:170px;background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:12px 12px 13px;cursor:pointer;transition:.15s;text-align:left}
+  .pnode:hover{border-color:var(--dim);transform:translateY(-2px)}
+  .pnode.active{border-color:var(--cyan);background:linear-gradient(180deg,rgba(34,211,238,.12),rgba(15,23,42,.6));box-shadow:0 10px 24px -14px rgba(34,211,238,.6)}
+  .pnode .pn{font-family:var(--mono);font-size:10.5px;color:var(--dim);letter-spacing:1px}
+  .pnode .pt{font-size:13.2px;font-weight:700;margin-top:4px;line-height:1.3}
+  .pnode .ps{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.35}
+  .pdetail{background:var(--panel2);border:1px solid var(--cyan);border-radius:14px;padding:22px 24px;min-height:150px}
+  .pdetail h3{font-size:18px;margin-bottom:6px;color:var(--cyan)}
+  .pdetail .who{font-family:var(--mono);font-size:11.5px;color:var(--dim);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+  .pdetail p{color:var(--muted);font-size:14px;margin-bottom:10px}
+  .pdetail ul{margin:8px 0 0 18px;color:var(--muted);font-size:13.6px}
+  .pdetail li{margin-bottom:5px}
+  .pnav{display:flex;gap:10px;margin-top:16px}
+  .pnav button{font-family:var(--mono);font-size:12px;padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--panel);color:var(--muted);cursor:pointer}
+  .pnav button:hover{color:var(--cyan);border-color:var(--cyan)}
+  /* router demo */
+  .router{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;align-items:start}
+  .rfilters{display:flex;flex-direction:column;gap:8px}
+  .rbtn{text-align:left;font-size:13.4px;font-family:var(--font);font-weight:600;padding:12px 15px;border-radius:10px;border:1px solid var(--border);background:var(--panel);color:var(--fg);cursor:pointer;transition:.15s}
+  .rbtn:hover{border-color:var(--cyan)}
+  .rbtn.active{border-color:var(--cyan);background:linear-gradient(90deg,rgba(34,211,238,.14),rgba(167,139,250,.08));color:var(--fg)}
+  .rout{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 20px;min-height:210px}
+  .rout h4{font-size:15px;margin-bottom:10px}
+  .rrow{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--border);font-size:13.4px;align-items:baseline}
+  .rrow:last-child{border-bottom:none}
+  .rrow .k{font-family:var(--mono);font-size:11px;color:var(--dim);min-width:96px;text-transform:uppercase;letter-spacing:.8px}
+  .rrow .v{color:var(--fg);flex:1}
+  .verdict{margin-top:12px;font-family:var(--mono);font-size:12.5px;padding:10px 14px;border-radius:9px}
+  .verdict.pass{background:rgba(52,211,153,.12);color:var(--emerald);border:1px solid rgba(52,211,153,.35)}
+  .verdict.fail{background:rgba(251,113,133,.12);color:var(--rose);border:1px solid rgba(251,113,133,.35)}
+  .verdict.gate{background:rgba(251,191,36,.12);color:var(--amber);border:1px solid rgba(251,191,36,.35)}
+  /* filter */
+  .filterbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+  .filterbar input{background:var(--panel);border:1px solid var(--border);border-radius:9px;color:var(--fg);padding:11px 14px;font-family:var(--mono);font-size:13px;min-width:280px;flex:1;outline:none}
+  .filterbar input:focus{border-color:var(--cyan)}
+  .count{font-family:var(--mono);font-size:12.5px;color:var(--cyan)}
+  /* terminal */
+  .term{background:#01040f;border:1px solid var(--border);border-radius:12px;overflow:hidden;font-family:var(--mono);font-size:12.8px}
+  .term .bar{display:flex;gap:6px;align-items:center;padding:9px 14px;background:var(--panel2);border-bottom:1px solid var(--border);color:var(--dim);font-size:11.5px}
+  .term .dot{width:10px;height:10px;border-radius:50%}
+  .term .body{padding:16px 18px;min-height:210px;max-height:330px;overflow:auto;line-height:1.75;white-space:pre-wrap}
+  .term .body .c{color:var(--emerald)}
+  .term .body .o{color:var(--muted)}
+  .term .body .w{color:var(--amber)}
+  .term .body .g{color:var(--dim)}
+  .cursor{display:inline-block;width:8px;height:15px;background:var(--cyan);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .termctl{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+  /* switch */
+  .switcher{display:flex;gap:12px;align-items:center;margin-bottom:20px;flex-wrap:wrap}
+  .switch{position:relative;display:inline-block;width:56px;height:30px}
+  .switch input{opacity:0;width:0;height:0}
+  .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--panel2);border:1px solid var(--border);transition:.25s;border-radius:999px}
+  .slider:before{content:"";position:absolute;height:22px;width:22px;left:3px;top:2px;background:var(--muted);transition:.25s;border-radius:50%}
+  input:checked+.slider{background:linear-gradient(90deg,var(--cyan),var(--violet));border-color:transparent}
+  input:checked+.slider:before{transform:translateX(26px);background:#020617}
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+  .stat{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:20px 22px}
+  .stat .n{font-family:var(--mono);font-size:30px;font-weight:700;color:var(--cyan);line-height:1.1}
+  .stat .l{color:var(--muted);font-size:12.8px;margin-top:8px}
+  /* bars */
+  .bar{height:9px;border-radius:999px;background:var(--panel2);overflow:hidden;border:1px solid var(--border)}
+  .bar span{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet))}
+  .boardgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .board{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+  .board .bn{font-family:var(--mono);font-size:13px;color:var(--cyan)}
+  .board .bd{color:var(--muted);font-size:12.6px;margin-top:4px}
+  .board .stat-row{display:flex;gap:14px;margin-top:10px;font-family:var(--mono);font-size:11.5px;color:var(--dim);flex-wrap:wrap}
+  .board .stat-row b{color:var(--fg);font-weight:600}
+  /* checklist */
+  .check{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+  .check label{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:14px 16px;font-size:14px;cursor:pointer;transition:.15s}
+  .check label:hover{border-color:var(--cyan)}
+  .check input{margin-top:4px;accent-color:#22d3ee}
+  .score{font-family:var(--mono);font-size:13px;color:var(--cyan);margin-top:14px}
+  pre{margin:0}
+  code{font-family:var(--mono)}
+  .cmd{color:var(--emerald)}
+  @media(max-width:820px){.topnav{display:none;flex-direction:column;width:100%;padding-top:8px}.topnav.open{display:flex}.hamb{display:block}.grid-2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="toast" id="toast"></div>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="sparkle">◆</span>&nbsp; The Research Framework</div>
+    <button class="hamb" id="hamb" aria-label="menu">☰</button>
+    <nav class="topnav" id="topnav">
+      <a href="#problem" class="active">The problem</a>
+      <a href="#loop">The loop</a>
+      <a href="#intake">Intake</a>
+      <a href="#routing">Routing</a>
+      <a href="#sources">Sources</a>
+      <a href="#describing">Describing</a>
+      <a href="#freshness">Freshness</a>
+      <a href="#landing">Landing it</a>
+      <a href="#asking">Asking it</a>
+      <a href="#guardrails">Guardrails</a>
+      <a href="#numbers">Numbers</a>
+      <a href="#takeaways">Takeaways</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<div class="hero" id="intro">
+  <div class="wrap">
+    <div class="overline">A deep dive · medium technical audience</div>
+    <h1>Research that doesn't rot. <span class="grad">From a question to a filed claim — automatically.</span></h1>
+    <p class="lead">Everyone can ask an AI a question. Almost nobody can keep the answer. This is the machinery I built so research comes in, gets described, gets graded, gets routed to the right place in my businesses, and stays findable a year later — with one cache instead of fifty re-fetches, and a hard line between what a peer-reviewed paper says and what a creator said on a podcast.</p>
+    <div class="chips">
+      <span class="chip"><b id="chip1">0</b> research records indexed</span>
+      <span class="chip"><b id="chip2">0</b> harvested items cached</span>
+      <span class="chip"><b>1</b> cache · <b>many</b> pipelines</span>
+      <span class="chip">Evidence <b>A / B / C</b></span>
+    </div>
+    <div class="cta-row">
+      <a href="#loop" class="btn btn-primary">▶&nbsp; Start with the whole loop</a>
+      <a href="#sources" class="btn btn-ghost">Jump to how sources are described</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PROBLEM ===== -->
+<section id="problem">
+  <div class="wrap reveal">
+    <div class="sect-label">01 · The problem</div>
+    <h2>Collecting is easy. Keeping is the hard part.</h2>
+    <p class="sect-sub">Research at home usually fails the same four ways. Every design decision in this framework exists to kill one of them.</p>
+    <div class="grid-2">
+      <div class="card"><div class="ico icon-rose">🌀</div><h3>Fetch–copy–forget</h3><p>You find a great paper or podcast, paste a summary somewhere, and six months later you can't find it, can't tell if it was a mouse study, and can't cite it. The work was done and the value is gone.</p></div>
+      <div class="card"><div class="ico icon-amber">♻️</div><h3>Everything gets re-fetched</h3><p>Five separate research efforts each go pull the same PubMed query, the same YouTube transcript, the same society page. Identical HTTP, identical pages re-hydrated, five times the cost.</p></div>
+      <div class="card"><div class="ico icon-rose">🎚️</div><h3>Evidence gets flattened</h3><p>A randomized trial, a chiropractor's YouTube video, and an anonymous forum post end up in one list, weighted the same. For health work that's not sloppy — it's dangerous.</p></div>
+      <div class="card"><div class="ico icon-amber">🕳️</div><h3>No destination</h3><p>Research piles up with nowhere to go. Nobody can say which business decision, protocol, or product claim this changed — so it never changes anything.</p></div>
+    </div>
+    <div class="quote"><b>The design goal in one line:</b> separate <em>fetching</em> from <em>synthesizing</em>, describe every source before you trust it, and make every harvest land somewhere specific or stop.</div>
+  </div>
+</section>
+
+<!-- ===== LOOP ===== -->
+<section id="loop">
+  <div class="wrap reveal">
+    <div class="sect-label">02 · The whole loop</div>
+    <h2>The framework, end to end.</h2>
+    <p class="sect-sub">Ten stages. Click any stage and I'll open it up. This is the same path whether the request came from me typing a question, a scheduled weekly job, or a link I dropped in.</p>
+    <div class="pipe" id="pipe"></div>
+    <div class="pdetail" id="pipedetail"></div>
+    <div class="pnav">
+      <button id="pprev">← Previous stage</button>
+      <button id="pnext">Next stage →</button>
+      <button id="pauto">▶ Auto-play the loop</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== INTAKE ===== -->
+<section id="intake">
+  <div class="wrap reveal">
+    <div class="sect-label">03 · Ingestion — how a request gets in</div>
+    <h2>Four doors, one intake.</h2>
+    <p class="sect-sub">A request can arrive from anywhere, but it always enters the same funnel: <b>classify → relevance-gate → name a destination</b>. Nothing is fetched before the gate passes.</p>
+    <div class="grid-2">
+      <div class="card"><div class="ico icon-cyan">💬</div><div class="tag">Door 1</div><h3>I ask, in plain language</h3><p>"What does the evidence say about X?", "pull the latest on Y." That becomes a scoped request with a target domain — not a vague web search. The profile that owns that domain handles it.</p></div>
+      <div class="card"><div class="ico icon-violet">⏰</div><div class="tag">Door 2</div><h3>Scheduled pipelines</h3><p>Recurring jobs fire on their own and ask the same structured question every week. This is how a topic stays <em>current</em> instead of being a one-time dump.</p></div>
+      <div class="card"><div class="ico icon-emerald">🔗</div><div class="tag">Door 3</div><h3>A dropped link or artifact</h3><p>A YouTube episode, a paper, a Substack post, a screenshot of a lab panel. It gets an ID and a card — a real work item, not a bookmark.</p></div>
+      <div class="card"><div class="ico icon-amber">🔁</div><div class="tag">Door 4</div><h3>A follow-up from last run</h3><p>Every completed harvest writes a follow-up line. Open follow-ups are re-read at intake, so nothing silently dies between runs.</p></div>
+    </div>
+
+    <h3 style="font-size:17px;margin:30px 0 12px">The standing pipelines (live schedule)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Pipeline</th><th>Cadence</th><th>What it asks</th></tr></thead>
+        <tbody>
+          <tr><td><b>Menopause research</b></td><td class="mono">Mon 7:00am</td><td>Human/clinical synthesis — the canonical template every other domain pipeline copies.</td></tr>
+          <tr><td><b>Companion-animal pipeline</b></td><td class="mono">Mon 6:00am</td><td>Pet/large-animal peptide evidence, tagged by study model.</td></tr>
+          <tr><td><b>Harvest cache maintenance</b></td><td class="mono">Mon 6:00am</td><td>Prune expired raw files, refresh freshness manifest, rebuild the cache index.</td></tr>
+          <tr><td><b>Peptide signal (daily)</b></td><td class="mono">Daily 12:00</td><td>Delta scan of peptide/molecule mentions and stated use.</td></tr>
+          <tr><td><b>Creator-feed sweep</b></td><td class="mono">Daily 21:00</td><td>New posts from the tracked clinician/creator roster.</td></tr>
+          <tr><td><b>Competitor dispatch</b></td><td class="mono">Daily 21:30</td><td>Rank and teardown the competitor set; material-change detection.</td></tr>
+          <tr><td><b>Reference review</b></td><td class="mono">Mon 7:30am</td><td>Weekly consolidation of the week's peptide references.</td></tr>
+          <tr><td><b>Research-infra dashboard</b></td><td class="mono">every 6h</td><td>Re-counts the index, cache and boards; alerts only when something is wrong.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="footnote">Cadences verified against the live cron store on 2026-09-09. A pipeline is only called "recurring" if it has a real schedule firing — not a plan to.</div>
+  </div>
+</section>
+
+<!-- ===== ROUTING ===== -->
+<section id="routing">
+  <div class="wrap reveal">
+    <div class="sect-label">04 · Routing — where the work goes</div>
+    <h2>Named boards. Never a default pile.</h2>
+    <p class="sect-sub">The single most important routing rule: work is assigned to a <b>named board</b> by domain. There is no default bucket, because a default bucket is where research goes to die. The same profile owns the pipeline end-to-end — there is no separate "research bot" to hand off to.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>What came in</th><th>Board</th><th>Typical worker</th></tr></thead>
+        <tbody>
+          <tr><td>Creator / YouTube / podcast harvest</td><td class="mono">bb-youtube</td><td>cheap bulk-harvest model</td></tr>
+          <tr><td>Protocols, peptides, dosing as-stated</td><td class="mono">bb-protocols</td><td>cheap worker + senior review on conflicts</td></tr>
+          <tr><td>Competitor teardown / intel</td><td class="mono">bb-compete</td><td>standard worker</td></tr>
+          <tr><td>Demand / growth signal</td><td class="mono">bb-growth</td><td>standard worker</td></tr>
+          <tr><td>Venture-specific research</td><td class="mono">venture board</td><td>domain profile</td></tr>
+          <tr><td>My own infrastructure questions</td><td class="mono">hermes-ops</td><td>infra worker</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-size:17px;margin:30px 0 12px">Cost routing — the model follows the job</h3>
+    <div class="grid-3">
+      <div class="card"><div class="ico icon-emerald">🪙</div><h3>Bulk harvest = cheap</h3><p>High-volume fetching and summarising runs on free/low-cost models. If that provider is flaky, the card is re-pinned rather than left blocked — work doesn't stall on a supplier.</p></div>
+      <div class="card"><div class="ico icon-amber">⚖️</div><h3>Conflicts = senior model</h3><p>When two sources disagree on a dose or a protocol, the card is escalated to a strong reasoning model for adversarial review, not settled by whichever summary ran first.</p></div>
+      <div class="card"><div class="ico icon-violet">🚦</div><h3>Boards show the truth</h3><p>Every board reports done / blocked / open. A blocked research card is a real signal — either it needs a decision from me, or it's low-value and should be killed.</p></div>
+    </div>
+
+    <h3 style="font-size:17px;margin:30px 0 12px">Live board state (measured 2026-09-09)</h3>
+    <div class="boardgrid" id="boardgrid"></div>
+
+    <h3 style="font-size:17px;margin:34px 0 12px">Routing demo — click a harvest and watch the decision</h3>
+    <div class="router">
+      <div class="rfilters" id="rfilters"></div>
+      <div class="rout" id="rout"></div>
+    </div>
+    <div class="footnote">The failures matter more than the passes. A mega-audience episode that isn't about my businesses is a hard skip — no fetch, no tokens, no index entry.</div>
+  </div>
+</section>
+
+<!-- ===== SOURCES ===== -->
+<section id="sources">
+  <div class="wrap reveal">
+    <div class="sect-label">05 · Sources — what we collect, and how each is described</div>
+    <h2>Every source has a method — not a vibe.</h2>
+    <p class="sect-sub">This is the part I'm most proud of. There's a canonical registry: for every source we use, it records <b>what type of research it is for</b>, <b>exactly how to get data out of it</b>, what it costs, and <b>its known traps</b>. An agent reads the registry before it fetches anything, so we never improvise a scrape that gets bot-walled.</p>
+
+    <div class="tabs" id="srcTabs">
+      <button class="tab active" data-tab="lit">📚 Primary literature</button>
+      <button class="tab" data-tab="reg">🏛️ Regulatory &amp; trials</button>
+      <button class="tab" data-tab="inst">🎓 Institutions &amp; societies</button>
+      <button class="tab" data-tab="comm">💬 Community &amp; creator</button>
+      <button class="tab" data-tab="eco">🧬 The biohacking ecosystem</button>
+      <button class="tab" data-tab="policy">📰 Policy &amp; news</button>
+    </div>
+
+    <div class="filterbar">
+      <input id="srcFilter" type="text" placeholder="filter sources — try: pubmed, dosing, forum, tier B, RSS…">
+      <span class="count" id="srcCount"></span>
+    </div>
+
+    <div class="tabpane active" id="pane-lit">
+      <div class="grid-2">
+        <div class="card srcrow" data-k="pubmed primary biomedical literature abstracts metadata tier a esearch esummary eutils free no key"><div class="tag">Tier A</div><h3>PubMed</h3><p>Peer-reviewed biomedical primary literature — abstracts and metadata. Pulled through the NCBI E-utilities API (free, no key). <b>Trap:</b> a search page can auto-save to a cache instead of giving you text — go to the open-access full text for the actual paper.</p></div>
+        <div class="card srcrow" data-k="pmc pubmed central open access full text tier a peer reviewed"><div class="tag">Tier A</div><h3>PMC — open-access full text</h3><p>The actual paper, free. Not every PubMed hit is open access, so the PMC link is checked before we claim full text. This is the preferred source for primary evidence.</p></div>
+        <div class="card srcrow" data-k="arxiv preprints bio cs med physics api free tier a preprint not peer reviewed"><div class="tag">Tier A (preprint)</div><h3>arXiv</h3><p>Preprints across bio, CS, medicine. Pulled via the export API, not the website. <b>Trap:</b> a preprint is <em>not</em> peer-reviewed — every record says so.</p></div>
+        <div class="card srcrow" data-k="semantic scholar metadata citation graph api free tier a"><div class="tag">Tier A (metadata)</div><h3>Semantic Scholar</h3><p>Scholarly metadata and the citation graph. Used for citation counts and related work — never quoted as full text.</p></div>
+        <div class="card srcrow" data-k="crossref doi metadata rest api free tier a"><div class="tag">Tier A (metadata)</div><h3>Crossref</h3><p>DOI metadata: title, authors, journal, year. The tool we use to verify that a DOI and a citation actually resolve.</p></div>
+        <div class="card srcrow" data-k="google scholar bot walled snippets broad search tier a"><div class="tag">Tier A (results)</div><h3>Google Scholar</h3><p>Broad scholarly search. <b>Bot-walled</b> — we take snippets only, never scrape it, and always verify the paper on PubMed, PMC or a DOI before citing it. A registry entry like this is why we don't waste an hour discovering the wall ourselves.</p></div>
+        <div class="card srcrow" data-k="specialty journals menopause maturitas climacteric jcem nejm lancet jama nutrients tier a paywalled"><div class="tag">Tier A</div><h3>Specialty journals</h3><p>Menopause, Maturitas, Climacteric, JCEM, JAMA, NEJM, Lancet and friends — reached <em>through</em> PubMed rather than by scraping each publisher. Paywalled full text means abstract plus open access where it exists.</p></div>
+      </div>
+    </div>
+
+    <div class="tabpane" id="pane-reg">
+      <div class="grid-2">
+        <div class="card srcrow" data-k="clinicaltrials.gov trial registry v2 api free tier a ongoing status endpoints"><div class="tag">Tier A</div><h3>ClinicalTrials.gov</h3><p>The trial registry, via its v2 API. Used for trial status and endpoints — <b>never</b> for dosing guidance. It's also the source we re-check before leaving the word "ongoing" on anything.</p></div>
+        <div class="card srcrow" data-k="dailymed fda labels approved drug peptide dosing indications contraindications tier a egrifta vyleesi"><div class="tag">Tier A</div><h3>DailyMed / FDA labels</h3><p>The authoritative source for FDA-approved dosing and indications. When a claim touches an approved product, the label is the citation — not a clinician's video.</p></div>
+      </div>
+    </div>
+
+    <div class="tabpane" id="pane-inst">
+      <div class="grid-2">
+        <div class="card srcrow" data-k="nams menopause society clinical guidance position statements tier a b menopause.org"><div class="tag">Tier A/B</div><h3>NAMS / The Menopause Society</h3><p>Clinical guidance and position statements. Institutional consensus — strong for framing, and it's what tells us whether a creator's claim is mainstream or fringe.</p></div>
+        <div class="card srcrow" data-k="endocrine society guidelines hormone research tier a b endocrine.org"><div class="tag">Tier A/B</div><h3>Endocrine Society</h3><p>Clinical practice guidelines and hormone research.</p></div>
+        <div class="card srcrow" data-k="acog obgyn practice bulletins clinical guidance tier a b acog.org"><div class="tag">Tier A/B</div><h3>ACOG</h3><p>OB/GYN clinical guidance and practice bulletins.</p></div>
+        <div class="card srcrow" data-k="university harvard stanford mayo johns hopkins ucsf edu patient education tier b institutional"><div class="tag">Tier B</div><h3>University health centers</h3><p>Harvard, Stanford, Mayo, Johns Hopkins, UCSF — institutional guidance and patient education. <b>Trap:</b> excellent for consensus framing, never counted as primary evidence.</p></div>
+      </div>
+    </div>
+
+    <div class="tabpane" id="pane-comm">
+      <div class="grid-2">
+        <div class="card srcrow" data-k="reddit community anecdotal tier c scrape wall snippets web_search"><div class="tag">Tier C</div><h3>Reddit</h3><p>Community and anecdotal signal. <b>Scrape-walled</b> — direct extraction returns "Website Not Supported", so we take search snippets and say plainly when full comment trees weren't reachable. We never fabricate comment content.</p></div>
+        <div class="card srcrow" data-k="x twitter current discussion hypothesis generating tier c x_search xai synthesized no citations"><div class="tag">Tier C</div><h3>X / Twitter</h3><p>Current discussion via the x_search tool. It returns a <em>synthesized</em> answer mixing anecdote, preprint and animal data — so it's labelled hypothesis-generating, and we note when it came back with no citations at all.</p></div>
+        <div class="card srcrow" data-k="substack newsletters long form opinion tier b c rss feed free"><div class="tag">Tier B/C</div><h3>Substack</h3><p>Creator long-form. Every newsletter exposes a free RSS feed, so it's monitored rather than scraped. Credentialed clinician authors are tier B; everyone else is tier C and gets verified against primary literature.</p></div>
+        <div class="card srcrow" data-k="youtube creator education transcripts asr errors tier b c yt-dlp"><div class="tag">Tier B/C</div><h3>YouTube</h3><p>Creator education via transcripts. <b>Trap:</b> automatic speech recognition mangles drug names and numbers, so any dosing claim is verified against primary literature before it's repeated.</p></div>
+      </div>
+    </div>
+
+    <div class="tabpane" id="pane-eco">
+      <p style="color:var(--muted);font-size:14px;margin-bottom:16px">Underneath the generic categories sits a <b>named, per-source catalog</b> of the bio-optimization ecosystem: who they are, what they're actually good for, their tier, and their commercial conflict. This is a living roster — reviewed weekly, and quarterly for dead handles.</p>
+      <div class="grid-2">
+        <div class="card srcrow" data-k="bench scientist lab podcast neuroscience sleep hormones peptides tier b trusted on-topic"><div class="tag">Podcasts · Tier B · TRUSTED (on-topic only)</div><h3>Bench-scientist lab podcast</h3><p>Neuroscientist. Broad neuroscience, sleep, hormones, peptide deep-dives. Harvested only when the guest or monologue is directly on-topic. Long episodes — show notes for episode-level indexing, transcripts for claims.</p></div>
+        <div class="card srcrow" data-k="longevity physician podcast the drive metabolic evidence based tier b education"><div class="tag">Podcast · Tier B</div><h3>Longevity physician's podcast</h3><p>Longevity, metabolic health, evidence-based medicine, exercise. Paywalled member content, but free show notes carry most claims.</p></div>
+        <div class="card srcrow" data-k="nutrition science podcast aging cancer sauna cold tier b"><div class="tag">Podcast · Tier B</div><h3>Nutrition-science podcast</h3><p>Nutrition, aging, cancer, exercise science, sauna/cold. Some member-gated; free episodes and blog cover the core.</p></div>
+        <div class="card srcrow" data-k="longevity researcher podcast aging fasting supplements commercial interest tier b"><div class="tag">Podcast · Tier B</div><h3>Longevity-researcher podcast</h3><p>Aging mechanisms, fasting, longevity research. <b>Trap:</b> he has commercial supplement interests, so promotional claims get labelled as such.</p></div>
+        <div class="card srcrow" data-k="naturopath clinician men's health trt weight loss peptides youtube tier b grey market dosing"><div class="tag">YouTube · Tier B · clinician</div><h3>Naturopathic clinician channel</h3><p>Naturopathic doctor — men's health, TRT, weight-loss peptides. <b>Trap:</b> grey-market dosing, flagged as clinician-unconfirmed.</p></div>
+        <div class="card srcrow" data-k="chiropractor clinician glp1 ghk-cu aod peptides youtube tier b grey market"><div class="tag">YouTube · Tier B · clinician</div><h3>Chiropractic clinician channel</h3><p>GLP-1s, GHK-Cu, AOD-9604, peptide protocols. Education hub for internalizing the market — never named on customer-facing copy.</p></div>
+        <div class="card srcrow" data-k="internal medicine clinician peptide science safety bpc-157 clinic tier b trusted"><div class="tag">YouTube/X · Tier B · TRUSTED</div><h3>Internal-medicine clinician channel</h3><p>Board-certified internal medicine, peptide science and safety — mechanism-first, no public dosing. Feeds the peptide lane.</p></div>
+        <div class="card srcrow" data-k="commercial health funnel intel only competitor tier c skip"><div class="tag">Podcast · Tier C · INTEL ONLY</div><h3>High-reach commercial health funnel</h3><p>Commercial funnel. Stays intel-only <em>even when</em> a guest passes the gate — never promoted to protocol-core. A channel is not a trusted source.</p></div>
+        <div class="card srcrow" data-k="mega-audience interview show amplifier only not protocol source relevance gate"><div class="tag">Podcast · Amplifier</div><h3>Mega-audience interview show</h3><p>An amplifier, never a protocol source. Guests are triaged individually: tight alignment gets queued (labs, peptides, metabolic, pain), diet/fitness filler is skipped outright.</p></div>
+        <div class="card srcrow" data-k="longecity forum longevity biohacking phpbb no api anecdotal tier c"><div class="tag">Forums · Tier C</div><h3>LongeCity, r/Biohackers, r/Peptides, r/Longevity</h3><p>Community signal, anecdotal by definition, always hypothesis-generating. Reddit's scrape wall means snippets only; the phpBB forum is readable but aging and declining.</p></div>
+        <div class="card srcrow" data-k="lifespan.io buck institute nonprofit longevity research news rss tier a b"><div class="tag">Websites · Tier A/B</div><h3>Lifespan.io · Buck Institute</h3><p>Nonprofit longevity advocacy and an independent aging research institute. Both publish RSS, so they're monitored rather than visited.</p></div>
+        <div class="card srcrow" data-k="vendor research hubs gethealthspan drrogers rupahealth rite aid dosing guides grey market tier c clinician_confirmed false"><div class="tag">Websites · Tier C</div><h3>Vendor research hubs</h3><p>Evidence-flavoured dosing guides from sellers of the compounds. Harvested, but always flagged <span class="mono">clinician_confirmed: false</span> — reported practice patterns, not standardised doses.</p></div>
+      </div>
+      <div class="ribbon warn">
+        <h3>🗝️ The "provision, don't subscribe" rule</h3>
+        <p>The registry also tracks <b>what bulk harvesting would need</b> — a free YouTube Data API key, a free Reddit app for its data API, RSS feeds for podcasts and Substacks. Free = provision it. The one paid path (bulk raw X reads) is explicitly <b>flagged for approval before anyone subscribes</b>. That's the whole point of writing the registry down: an agent can't quietly sign up for something.</p>
+      </div>
+    </div>
+
+    <div class="tabpane" id="pane-policy">
+      <div class="grid-2">
+        <div class="card srcrow" data-k="maha make america healthy again health policy chronic disease tier c policy signal"><div class="tag">Tier C (policy)</div><h3>MAHA / policy signals</h3><p>Health policy and chronic-disease framing. Labelled as a policy signal, never dressed up as clinical evidence — policy shifts change markets, not mechanisms.</p></div>
+        <div class="card srcrow" data-k="rss news aggregators blogwatcher atom feeds recency tier c"><div class="tag">Tier C</div><h3>RSS / news</h3><p>Monitored through a feed reader for recency signal only. Good for noticing a story early; useless as evidence on its own.</p></div>
+      </div>
+    </div>
+
+    <div class="ribbon">
+      <h3>📇 Described once, reused by every pipeline</h3>
+      <p>The registry is a single file. It is not documentation that drifts — it's operational: pipelines read it <em>before</em> fetching, and it's re-verified quarterly for dead handles and moved sources. One description of a source means every pipeline inherits the same method and the same traps.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DESCRIBING ===== -->
+<section id="describing">
+  <div class="wrap reveal">
+    <div class="sect-label">06 · Describing — what a harvested item looks like</div>
+    <h2>A source isn't "saved." It's described, graded, and tagged.</h2>
+    <p class="sect-sub">Every harvested artifact carries a header that answers: where it came from, who said it, when, how it was ingested, what class of evidence it is, and what you may <em>not</em> do with it. Here's a real one, trimmed.</p>
+    <div class="term">
+      <div class="bar"><span class="dot" style="background:#fb7185"></span><span class="dot" style="background:#fbbf24"></span><span class="dot" style="background:#34d399"></span>&nbsp; Research/harvest/youtube/20260906-…-fasting-insulin.md</div>
+      <div class="body" style="white-space:pre-wrap"># Metabolic Health, Fasting Insulin &amp; Muscle-as-Medicine — [guest]
+<span class="g">(high-reach health podcast)</span>
+
+<span class="c">Source:</span>        YouTube podcast
+<span class="c">URL:</span>           https://youtu.be/v2oirgs9o2s
+<span class="c">Channel/speaker:</span> Host (owns the supplement brand in the ads) · Guest (resident, not board-certified)
+<span class="c">Captured:</span>      2026-08-23   <span class="c">Length:</span> ~1:10:19
+<span class="c">Ingest:</span>        businessbrain-youtube-research — tier-A extract
+<span class="c">Classification:</span> education research · high relevance · commercial/competitive intel
+
+<span class="w">> COMPLIANCE (do NOT ship as medical or dosing guidance)</span>
+<span class="w">>  · Educational/informational only. Not diagnosis, treatment or a protocol.</span>
+<span class="w">>  · Host has a commercial conflict (owns the supplement brand in the ads).</span>
+<span class="w">>  · Guest is a resident, not board-certified — functional-medicine lens, not standard of care.</span>
+<span class="w">>  · Doses as stated only; biomarker targets are speaker preferences, not universal.</span>
+
+<span class="c">## TL;DR</span>          → the claim, stated in the note (not a transcript dump)
+<span class="c">## Core content</span>   → sectioned, quotable, attributed
+<span class="c">Model tags:</span>     human (not an animal study — never implied as one)</div>
+    </div>
+    <div class="footnote">Note what's in there: the commercial conflict is <em>inside the artifact</em>, so no downstream agent can accidentally launder a host's ad into a product claim.</div>
+
+    <h3 style="font-size:17px;margin:32px 0 12px">Evidence tiers — every claim gets one</h3>
+    <div class="grid-3">
+      <div class="card"><div class="tag" style="color:var(--emerald)">Tier A</div><h3>Peer-reviewed / FDA label</h3><p>The only tier allowed to carry a product claim. A record with no verifiable identifier — a real PMID or PMC link — <b>does not exist</b> as far as the framework is concerned.</p></div>
+      <div class="card"><div class="tag" style="color:var(--amber)">Tier B</div><h3>Credentialed clinician publication</h3><p>An MD, PhD, DC or ND publishing in their lane. Strong education signal; dosing still gets flagged <span class="mono">clinician_confirmed: false</span> unless it's a label.</p></div>
+      <div class="card"><div class="tag" style="color:var(--rose)">Tier C</div><h3>Community / creator / grey-market</h3><p>Hypothesis-generating only. Never used as product proof, and never promoted just because it's popular.</p></div>
+    </div>
+
+    <h3 style="font-size:17px;margin:32px 0 12px">The traps we encode, so we stop hitting them</h3>
+    <div class="grid-2">
+      <div class="card"><div class="ico icon-rose">🔤</div><h3>Acronym pollution</h3><p>Short peptide names collide with unrelated acronyms and genes — one peptide abbreviation is also a cardiac-imaging term, another is a gene. Every hit is verified against the actual paper before it's counted. This is the single biggest source of junk records.</p></div>
+      <div class="card"><div class="ico icon-rose">🐭</div><h3>Model laundering</h3><p>A rodent study is legitimate content but may never be labelled or implied as a canine or human trial. Every record carries its study model: rodent, canine, feline, equine, human, in-vitro.</p></div>
+      <div class="card"><div class="ico icon-amber">🧪</div><h3>As-stated only</h3><p>If a creator says a dose, we record it as their stated dose. We don't round it, translate it into a protocol, or present it as consensus.</p></div>
+      <div class="card"><div class="ico icon-amber">🎙️</div><h3>Attribution drift</h3><p>On interview shows, the claim belongs to the guest, not the host. Crediting the wrong person is how a commercial funnel becomes a "trusted source".</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FRESHNESS ===== -->
+<section id="freshness">
+  <div class="wrap reveal">
+    <div class="sect-label">07 · Freshness &amp; the shared cache</div>
+    <h2>Fetch once. Reuse everywhere.</h2>
+    <p class="sect-sub">This is the piece that made the whole thing affordable. One cache, shared by every pipeline. Before anything fetches, it asks the cache. A source is only re-fetched when its freshness window has genuinely expired.</p>
+
+    <div class="switcher">
+      <label class="switch"><input type="checkbox" id="cacheSwitch" checked><span class="slider"></span></label>
+      <span style="color:var(--muted);font-size:14px"><b id="cacheState" style="color:var(--emerald)">Cache-first ON</b> — every pipeline checks the shared harvest cache before fetching</span>
+    </div>
+    <div class="grid-2" id="cacheGrid"></div>
+
+    <h3 style="font-size:17px;margin:32px 0 12px">Volatility decides the window</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Volatility</th><th>Sources</th><th>Freshness window</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge b-rose">Volatile</span></td><td>X (1 day) · Reddit &amp; news (2 days) · policy / Substack / YouTube / biohacking / general web (3 days)</td><td class="mono">1–3 days</td></tr>
+          <tr><td><span class="badge b-green">Stable</span></td><td>PubMed · arXiv · Semantic Scholar · Crossref · ClinicalTrials</td><td class="mono">30 days</td></tr>
+          <tr><td><span class="badge b-green">Stable</span></td><td>DailyMed · university · professional society</td><td class="mono">90 days</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="footnote">A social post from an hour ago and an FDA label are not the same kind of fact. Treating them with the same expiry is how you end up citing a deleted tweet.</p>
+
+    <h3 style="font-size:17px;margin:32px 0 12px">The cache command surface</h3>
+    <div class="term">
+      <div class="bar"><span class="dot" style="background:#fb7185"></span><span class="dot" style="background:#fbbf24"></span><span class="dot" style="background:#34d399"></span>&nbsp; research_harvest.py — replay</div>
+      <div class="body" id="termBody"></div>
+    </div>
+    <div class="termctl">
+      <button class="btn btn-ghost" id="termStep" style="padding:10px 20px;font-size:13.5px">▶&nbsp; Next step</button>
+      <button class="btn btn-ghost" id="termReplay" style="padding:10px 20px;font-size:13.5px">↺&nbsp; Replay</button>
+    </div>
+    <p class="footnote">This is the real CLI. The same sequence runs whether I ask by hand or a weekly job fires.</p>
+  </div>
+</section>
+
+<!-- ===== LANDING ===== -->
+<section id="landing">
+  <div class="wrap reveal">
+    <div class="sect-label">08 · Landing it — the part everyone skips</div>
+    <h2>A harvest card marked "done" is not finished.</h2>
+    <p class="sect-sub">The failure mode I called out early was: <em>what happens to the data after the research?</em> So the framework has a mandatory landing sequence. If the destination can't be named, the work stops and asks me — it does not silently grind and index raw files forever.</p>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><div><h3>Catch check</h3><p>The deliverable paths are verified on disk. A card that says done with nothing behind it fails here.</p></div></div>
+      <div class="step"><div class="num">2</div><div><h3>Name one destination</h3><p>One of: my analytics venture · my peptide venture · competitor intel · discard. <b>Cannot name one → stop and ask.</b></p></div></div>
+      <div class="step"><div class="num">3</div><div><h3>Assign a lane</h3><p>Trusted · education-B · community-C · intel-only. The lane constrains what the material is allowed to influence later.</p></div></div>
+      <div class="step"><div class="num">4</div><div><h3>Synthesize — this is the job</h3><p>Write a note that <em>states the claim</em>. A standing protocol or lab definition goes to the knowledge layer; a persona only changes if the evidence actually changes it. Raw cache is a cache — cache is not the brain.</p></div></div>
+      <div class="step"><div class="num">5</div><div><h3>Rebuild the knowledge graph</h3><p>Collect and embed the shards that were touched, so the new claim is retrievable by meaning and not just by filename.</p></div></div>
+      <div class="step"><div class="num">6</div><div><h3>Re-check stale claims</h3><p>Before leaving the word "ongoing" anywhere, the trial registry is re-checked. Stale facts are the quiet killer of a knowledge base.</p></div></div>
+      <div class="step"><div class="num">7</div><div><h3>Mark the follow-up landed</h3><p>The open follow-up gets closed with a path. Nothing is left dangling between runs.</p></div></div>
+      <div class="step"><div class="num">8</div><div><h3>Refresh the dashboard</h3><p>The report surface re-counts itself. I read the dashboard — routine landings never buzz my phone.</p></div></div>
+    </div>
+    <div class="ribbon security">
+      <h3>✋ The permission to refuse</h3>
+      <p>The pipeline owner is explicitly allowed — required — to push back: duplicate harvest, vanity scrape, a card with no home. It comments "not valuable unless stated otherwise", blocks the card, and stops spawning that family of work until I answer. <b>A system that can never say no just produces more noise, faster.</b></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ASKING ===== -->
+<section id="asking">
+  <div class="wrap reveal">
+    <div class="sect-label">09 · Asking it things</div>
+    <h2>The output is a brain you can query, not a folder you dig through.</h2>
+    <p class="sect-sub">Everything above exists so this works. Research is collected into plain markdown, then indexed into shards that are queried by meaning as well as keyword. Notes stay the source of truth; the index is derived and rebuildable.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Index shard</th><th>Records</th><th>Covers</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">business-research</td><td class="mono">33,871</td><td>Every research note and harvested artifact</td></tr>
+          <tr><td class="mono">business-knowledge</td><td class="mono">760</td><td>Standing protocols, labs, ontologies</td></tr>
+          <tr><td class="mono">business-ventures</td><td class="mono">850</td><td>Venture-specific material</td></tr>
+          <tr><td class="mono">business-context</td><td class="mono">327</td><td>Operating context and daily logs</td></tr>
+          <tr><td class="mono">business-design</td><td class="mono">224</td><td>Design system and site material</td></tr>
+          <tr><td class="mono">business-core</td><td class="mono">254</td><td>Company core documents</td></tr>
+          <tr><td class="mono">business-personas</td><td class="mono">244</td><td>Customer personas</td></tr>
+          <tr><td class="mono">personal <span class="badge b-slate">local-only</span></td><td class="mono">1,557</td><td>My personal notes and protocols — never mixed into business shards</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="footnote">Personal and business indexes are deliberately separate. Personal material never lands in a business shard, and the index files live on a local-only path — never in the synced folder, never in the cloud.</p>
+
+    <h3 style="font-size:17px;margin:32px 0 12px">Why "meaning" beats "keyword" here</h3>
+    <div class="switcher">
+      <label class="switch"><input type="checkbox" id="semSwitch" checked><span class="slider"></span></label>
+      <span style="color:var(--muted);font-size:14px"><b id="semState" style="color:var(--emerald)">Meaning-aware retrieval ON</b></span>
+    </div>
+    <div class="grid-2" id="semGrid"></div>
+    <div class="ribbon">
+      <h3>📌 One-line version</h3>
+      <p><b>The cache is the pantry, the index is the cook.</b> Harvesting fills shelves; the retrieval layer turns shelves into answers. I can ask "what does the evidence say about early-warning metabolic markers" and get the fasting-insulin artifact back — without having remembered its filename or that it came from a podcast.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GUARDRAILS ===== -->
+<section id="guardrails">
+  <div class="wrap reveal">
+    <div class="sect-label">10 · Guardrails</div>
+    <h2>What this framework is not allowed to do.</h2>
+    <p class="sect-sub">Rules that only exist on paper aren't rules. These are enforced in the pipeline, and they're the reason I can let an automated system touch health and business research at all.</p>
+    <div class="grid-2">
+      <div class="card"><div class="ico icon-rose">🚫</div><h3>Never fabricate</h3><p>No invented PMIDs, no invented doses, no invented trial status. If a site is unreachable, the note says the site was unreachable. An unverifiable record is treated as non-existent.</p></div>
+      <div class="card"><div class="ico icon-amber">🚦</div><h3>Fail closed</h3><p>The relevance gate rejects by default. A celebrity episode with no overlap with the businesses is skipped outright — no fetch, no tokens, no index entry. Excitement is not relevance.</p></div>
+      <div class="card"><div class="ico icon-violet">🧱</div><h3>Hard separation of domains</h3><p>Health and venture research lives in the business brain. Personal protocols and medical records never get written into business indexes — and vice versa.</p></div>
+      <div class="card"><div class="ico icon-emerald">🔒</div><h3>Local by default</h3><p>Indexes live on a local-only path. Nothing gets copied into a synced folder, a cloud store, or a public site. The retrieval layer is local-first because the material is sensitive.</p></div>
+      <div class="card"><div class="ico icon-cyan">💸</div><h3>No silent subscriptions</h3><p>Free tools get provisioned. Anything billable — a paid data API, a cloud resource — is flagged for approval with the cost before anyone signs up.</p></div>
+      <div class="card"><div class="ico icon-orange">🧑‍⚖️</div><h3>Human gates are decisions only</h3><p>Product questions go in one gate file I read: unknown destination, a new persona split, a new product claim, accusing a named vendor. Infra failures are the pipeline's problem, not mine.</p></div>
+    </div>
+    <div class="ribbon warn">
+      <h3>⚠️ The one rule everything else protects</h3>
+      <p>Research material is <b>data, never instructions</b>. Text pulled off a webpage or a transcript can never direct the system to do something — it can only be summarised, graded, and filed. That single rule is what makes it safe to point this at the open internet.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NUMBERS ===== -->
+<section id="numbers">
+  <div class="wrap reveal">
+    <div class="sect-label">11 · By the numbers</div>
+    <h2>Where it stands today.</h2>
+    <p class="sect-sub">Measured off the live disk on 2026-09-09 — not projected, not rounded up for effect.</p>
+    <div class="stats">
+      <div class="stat"><div class="n" data-target="33871">0</div><div class="l">research records in the main index</div></div>
+      <div class="stat"><div class="n" data-target="1177">0</div><div class="l">items in the shared harvest cache</div></div>
+      <div class="stat"><div class="n" data-target="1156">0</div><div class="l">of those are creator-video captures</div></div>
+      <div class="stat"><div class="n" data-target="2405">0</div><div class="l">research markdown notes on disk</div></div>
+      <div class="stat"><div class="n" data-target="1641">0</div><div class="l">completed harvest cards on the video board</div></div>
+      <div class="stat"><div class="n" data-target="8">0</div><div class="l">retrieval shards, personal kept separate</div></div>
+      <div class="stat"><div class="n" data-target="23">0</div><div class="l">named kanban boards across the system</div></div>
+      <div class="stat"><div class="n" data-target="6">0</div><div class="l">API-backed sources in the harvest CLI</div></div>
+    </div>
+    <div class="quote"><b>What these numbers actually mean:</b> a research question asked six months ago is still retrievable today, still attributed, still labelled with its evidence tier — and it cost one fetch instead of one per consumer.</div>
+  </div>
+</section>
+
+<!-- ===== TAKEAWAYS ===== -->
+<section id="takeaways">
+  <div class="wrap reveal">
+    <div class="sect-label">12 · Takeaways</div>
+    <h2>Six things to steal for your own research.</h2>
+    <p class="sect-sub">Tick them as we go — a fair self-check that it all landed.</p>
+    <div class="check" id="checklist">
+      <label><input type="checkbox" data-pt="Separate fetching from synthesizing"><span><b>1 · Separate fetch from synthesis.</b> Fetching should be a cache operation; thinking should happen over the cached copy. Do that and duplication disappears.</span></label>
+      <label><input type="checkbox" data-pt="Describe every source before trusting it"><span><b>2 · Describe every source before you trust it.</b> What kind of research is it, how do you get data out of it, what is it bad at. Write it down once so nothing improvises.</span></label>
+      <label><input type="checkbox" data-pt="Grade every claim A/B/C"><span><b>3 · Grade every claim.</b> Peer-reviewed, credentialed, or community. If a tier isn't attached, popularity quietly becomes authority.</span></label>
+      <label><input type="checkbox" data-pt="Route to a named destination"><span><b>4 · Route to a named destination — or stop.</b> The most underrated rule. Research with no destination is a hobby, not a function.</span></label>
+      <label><input type="checkbox" data-pt="Freshness windows per source"><span><b>5 · Give each source a freshness window.</b> A tweet and an FDA label do not expire at the same speed.</span></label>
+      <label><input type="checkbox" data-pt="Let the system push back"><span><b>6 · Let the system push back.</b> Permission to refuse low-value work is what keeps an automated pipeline worth reading a year later.</span></label>
+    </div>
+    <div class="score" id="score">0 of 6 checked</div>
+    <div class="cta-row" style="margin-top:34px">
+      <a href="#intro" class="btn btn-primary">↺&nbsp; Start over</a>
+      <a href="#sources" class="btn btn-ghost">Back to the sources</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div>The Research Framework — a deep dive. Built on Hermes Agent.</div>
+    <div>Self-contained · works offline</div>
+  </div>
+</footer>
+
+<script>
+// ---------- progress + nav ----------
+const progress=document.getElementById('progress');
+const links=[...document.querySelectorAll('.topnav a')];
+const sections=links.map(a=>document.querySelector(a.getAttribute('href')));
+function onScroll(){const h=document.documentElement;progress.style.width=((h.scrollTop/(h.scrollHeight-h.clientHeight))*100)+'%';let idx=sections.length-1;sections.forEach((s,i)=>{if(s.getBoundingClientRect().top<=120)idx=i;});links.forEach((a,i)=>a.classList.toggle('active',i===idx));}
+window.addEventListener('scroll',onScroll);onScroll();
+document.getElementById('hamb').addEventListener('click',()=>document.getElementById('topnav').classList.toggle('open'));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// ---------- toast ----------
+let tt;function showToast(m){const t=document.getElementById('toast');t.innerHTML=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2600);}
+
+// ---------- hero + stat counters ----------
+function animateTo(el,target){
+  const dur=1100,start=performance.now();
+  function frame(now){const p=Math.min(1,(now-start)/dur);const eased=1-Math.pow(1-p,3);
+    const val=Math.floor(eased*target);
+    el.textContent=val.toLocaleString('en-US');
+    if(p<1)requestAnimationFrame(frame);else el.textContent=target.toLocaleString('en-US');}
+  requestAnimationFrame(frame);
+}
+animateTo(document.getElementById('chip1'),33871);
+animateTo(document.getElementById('chip2'),1177);
+const statIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){animateTo(e.target,parseInt(e.target.dataset.target,10));statIO.unobserve(e.target);}}),{threshold:.4});
+document.querySelectorAll('.stat .n').forEach(el=>statIO.observe(el));
+
+// ---------- pipeline ----------
+const stages=[
+ {t:'Request arrives',s:'A question, a schedule, a link, a follow-up',n:'STAGE 1',
+  b:'<p>Everything starts as an intent — not as a fetch. A request can be typed, scheduled, dropped in as a link, or carried over from a previous run\'s open follow-ups.</p><ul><li>The request is scoped to a domain before anything is fetched.</li><li>It becomes a real work item with an ID, so it can be tracked and refused.</li></ul>'},
+ {t:'Intake triage',s:'Classify it, gate it, name a board',n:'STAGE 2',
+  b:'<p>The request is classified and run through the relevance gate. This is a fail-closed gate: if it does not map to a live business question, it dies here.</p><ul><li>Relevance gate before tokens are spent — not after.</li><li>Work is assigned to a named board. There is no default pile.</li></ul>'},
+ {t:'Route to a board',s:'Named board + the right worker model',n:'STAGE 3',
+  b:'<p>Routing picks both the destination board and the economics: bulk harvesting goes to cheap models, conflicts and adversarial review go to a strong reasoning model.</p><ul><li>Creator/YouTube harvest → the video board. Protocols → the protocol board. Competitors → the intel board.</li><li>If the cheap provider is unhealthy, the card is re-pinned instead of left blocked.</li></ul>'},
+ {t:'Cache check',s:'Ask the cache before the internet',n:'STAGE 4',
+  b:'<p>The single most valuable step. Before any fetch, the pipeline asks the shared harvest cache whether this source plus this query is already fresh.</p><ul><li>Fresh → return the cached path, zero network calls.</li><li>Stale or absent → proceed to harvest.</li></ul>'},
+ {t:'Harvest',s:'API fetch or tool capture',n:'STAGE 5',
+  b:'<p>Six sources are pulled through real APIs — PubMed, arXiv, Semantic Scholar, Crossref, ClinicalTrials, DailyMed. Everything else is captured with the method the registry prescribes, then written into the cache.</p><ul><li>Retries with exponential backoff on rate limits and transient failures.</li><li>Partial failure is tolerated and recorded, never hidden.</li></ul>'},
+ {t:'Describe &amp; grade',s:'Header, tier, model tag, compliance',n:'STAGE 6',
+  b:'<p>The artifact gets its description: source, speaker, date, ingest method, classification, evidence tier, study model, and any commercial conflict — written <em>into the file</em>.</p><ul><li>Every claim carries a tier: A peer-reviewed / label, B credentialed clinician, C community.</li><li>Study model is mandatory — no implied species.</li></ul>'},
+ {t:'Synthesize',s:'State the claim, not a transcript dump',n:'STAGE 7',
+  b:'<p>Raw capture becomes a note that states the actual claim. This is the step that separates a cache from a brain.</p><ul><li>Standing protocols and lab definitions go to the knowledge layer.</li><li>A customer persona only changes if the evidence genuinely changes it.</li></ul>'},
+ {t:'Land it',s:'Destination, lane, and a written path',n:'STAGE 8',
+  b:'<p>One destination is named — or the work stops and asks. A lane constrains what the material may later influence.</p><ul><li>Cannot name a destination → human gate, stop.</li><li>Follow-up closed with a path so nothing dangles.</li></ul>'},
+ {t:'Index &amp; embed',s:'Make it findable by meaning',n:'STAGE 9',
+  b:'<p>The touched shards are re-collected and re-embedded, so the new claim is retrievable by meaning as well as keyword. Personal and business shards stay separate.</p><ul><li>Markdown remains the source of truth; the index is derived and rebuildable.</li><li>Index files live on a local-only path.</li></ul>'},
+ {t:'Report &amp; gate',s:'Dashboard reads; decisions wait for me',n:'STAGE 10',
+  b:'<p>The dashboard refreshes itself and reports counts. Routine landings never notify me. Only product decisions reach a human gate file.</p><ul><li>Alerting is exception-based: blocked cards, missing routes, index mismatches.</li><li>Stale trial status is re-checked before anything is left as "ongoing".</li></ul>'}
+];
+const pipe=document.getElementById('pipe'),pdetail=document.getElementById('pipedetail');
+let pIdx=0,pTimer=null;
+stages.forEach((s,i)=>{
+  const d=document.createElement('button');
+  d.className='pnode'+(i===0?' active':'');
+  d.innerHTML='<div class="pn">'+s.n+'</div><div class="pt">'+s.t+'</div><div class="ps">'+s.s+'</div>';
+  d.addEventListener('click',()=>{stopAuto();setStage(i);});
+  pipe.appendChild(d);
+});
+function setStage(i){
+  pIdx=(i+stages.length)%stages.length;
+  [...pipe.children].forEach((c,k)=>c.classList.toggle('active',k===pIdx));
+  const s=stages[pIdx];
+  pdetail.innerHTML='<h3>'+s.t+'</h3><div class="who">'+s.n+' of '+stages.length+'</div>'+s.b;
+}
+setStage(0);
+document.getElementById('pprev').addEventListener('click',()=>{stopAuto();setStage(pIdx-1);});
+document.getElementById('pnext').addEventListener('click',()=>{stopAuto();setStage(pIdx+1);});
+function autoStep(){setStage(pIdx+1);if(pIdx===stages.length-1)stopAuto();}
+function stopAuto(){if(pTimer){clearInterval(pTimer);pTimer=null;document.getElementById('pauto').textContent='▶ Auto-play the loop';}}
+document.getElementById('pauto').addEventListener('click',function(){
+  if(pTimer){stopAuto();return;}
+  this.textContent='⏸ Pause';
+  pTimer=setInterval(autoStep,2600);
+});
+
+// ---------- routing demo ----------
+const cases=[
+ {k:'Bench-scientist podcast — sleep & hormone monologue',board:'bb-youtube',lane:'trusted / education-B',dest:'Education layer for both ventures',gate:'PASS',model:'cheap bulk harvest + senior review if it changes a protocol',
+  v:'pass',vt:'✔ GATE PASS — on-topic. Harvest, tier B, attribute to the speaker as stated.'},
+ {k:'Clinician podcast — new peptide evidence (on-topic)',board:'bb-protocols',lane:'education-B',dest:'Peptide venture knowledge + protocol notes',gate:'PASS',model:'cheap worker; escalated if it conflicts with an existing dose',
+  v:'pass',vt:'✔ GATE PASS — harvest, then check for conflicts against the approved protocol set.'},
+ {k:'Competitor raises prices / launches a SKU',board:'bb-compete',lane:'intel-only',dest:'Competitor intel',gate:'PASS',model:'standard worker',
+  v:'pass',vt:'✔ GATE PASS — market intel; never promoted into product claims.'},
+ {k:'Mega-audience episode — celebrity guest, no overlap',board:'—',lane:'—',dest:'discard',gate:'FAIL',model:'none — no tokens spent',
+  v:'fail',vt:'✘ GATE FAIL — low-value. No fetch, no embed, no index entry.'},
+ {k:'Harvest finished, destination not obvious',board:'needs a named board first',lane:'—',dest:'unknown',gate:'ESCALATE',model:'none until decided',
+  v:'gate',vt:'⚠ HUMAN GATE — the pipeline stops and asks. It does not "just index it".'},
+ {k:'Two sources disagree on the same dose',board:'bb-protocols',lane:'conflict',dest:'Resolved before any protocol fold-in',gate:'REVIEW',model:'strong reasoning model, adversarial review',
+  v:'gate',vt:'⚠ NOT auto-resolved — a conflict is a decision, so a senior model argues it out.'}
+];
+const rfilters=document.getElementById('rfilters'),rout=document.getElementById('rout');
+cases.forEach((c,i)=>{
+  const b=document.createElement('button');
+  b.className='rbtn'+(i===0?' active':'');
+  b.textContent=c.k;
+  b.addEventListener('click',()=>{renderRoute(i);});
+  rfilters.appendChild(b);
+});
+function renderRoute(i){
+  [...rfilters.children].forEach((c,k)=>c.classList.toggle('active',k===i));
+  const c=cases[i];
+  rout.innerHTML='<h4>'+c.k+'</h4>'+
+    '<div class="rrow"><span class="k">Board</span><span class="v mono">'+c.board+'</span></div>'+
+    '<div class="rrow"><span class="k">Lane</span><span class="v">'+c.lane+'</span></div>'+
+    '<div class="rrow"><span class="k">Destination</span><span class="v">'+c.dest+'</span></div>'+
+    '<div class="rrow"><span class="k">Gate</span><span class="v">'+c.gate+'</span></div>'+
+    '<div class="rrow"><span class="k">Model</span><span class="v">'+c.model+'</span></div>'+
+    '<div class="verdict '+c.v+'">'+c.vt+'</div>';
+}
+renderRoute(0);
+
+// ---------- board state ----------
+const boards=[
+ {n:'bb-youtube',d:'creator / YouTube harvest',done:1641,blocked:0,open:67,openLabel:'archived'},
+ {n:'bb-compete',d:'competitor teardown &amp; intel',done:72,blocked:7,open:6,openLabel:'open'},
+ {n:'bb-growth',d:'demand &amp; growth signal',done:77,blocked:7,open:4,openLabel:'open'},
+ {n:'bb-protocols',d:'peptides &amp; protocol evidence',done:2,blocked:5,open:0,openLabel:'open'},
+ {n:'bb-peptide-signal',d:'daily peptide mention scan',done:6,blocked:2,open:0,openLabel:'open'},
+ {n:'hermes-ops',d:'my own infrastructure',done:2,blocked:0,open:0,openLabel:'open'}
+];
+const bg=document.getElementById('boardgrid');
+const maxDone=Math.max(...boards.map(b=>b.done));
+boards.forEach(b=>{
+  const pct=Math.max(2,Math.round((b.done/maxDone)*100));
+  const el=document.createElement('div');
+  el.className='board';
+  el.innerHTML='<div class="bn">'+b.n+'</div><div class="bd">'+b.d+'</div>'+
+    '<div class="bar" style="margin-top:12px"><span style="width:'+pct+'%"></span></div>'+
+    '<div class="stat-row"><span>done <b>'+b.done.toLocaleString('en-US')+'</b></span><span>blocked <b>'+b.blocked+'</b></span><span>'+b.openLabel+' <b>'+b.open+'</b></span></div>';
+  bg.appendChild(el);
+});
+
+// ---------- source tabs + filter ----------
+document.querySelectorAll('#srcTabs .tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('#srcTabs .tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tabpane').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  document.getElementById('pane-'+t.dataset.tab).classList.add('active');
+  applyFilter();
+}));
+const srcFilter=document.getElementById('srcFilter'),srcCount=document.getElementById('srcCount');
+function applyFilter(){
+  const q=(srcFilter.value||'').trim().toLowerCase();
+  const active=document.querySelector('.tabpane.active');
+  let shown=0,total=0;
+  document.querySelectorAll('.srcrow').forEach(c=>{
+    total++;
+    const hay=(c.dataset.k+' '+(c.textContent||'')).toLowerCase();
+    const match=!q||hay.indexOf(q)>-1;
+    if(active&&active.contains(c)){c.style.display=match?'':'none';if(match)shown++;}
+    else if(!active){c.style.display=match?'':'none';if(match)shown++;}
+  });
+  const inPane=active?active.querySelectorAll('.srcrow').length:total;
+  srcCount.textContent=q?(shown+' of '+inPane+' shown in this category · filter: "'+q+'"'):(inPane+' sources described in this category');
+}
+srcFilter.addEventListener('input',applyFilter);
+applyFilter();
+
+// ---------- cache switch ----------
+const cacheGrid=document.getElementById('cacheGrid'),cacheSwitch=document.getElementById('cacheSwitch'),cacheState=document.getElementById('cacheState');
+const cacheOn=[
+ {i:'🗄️',cl:'icon-emerald',t:'One cache, many pipelines',p:'A single shared harvest store. Every pipeline reads the same shelf instead of building its own.'},
+ {i:'⚡',cl:'icon-cyan',t:'Zero duplicate fetches',p:'A fresh hit returns immediately with the cached path attached to the run.'},
+ {i:'🎚️',cl:'icon-violet',t:'Consistent grading',p:'Because everyone reads the same artifact, tier and model tags can\'t drift between pipelines.'}
+];
+const cacheOff=[
+ {i:'🌀',cl:'icon-rose',t:'Five pipelines, five fetches',p:'Each effort pulls the same query again — same HTTP, same pages, same cost, repeated.'},
+ {i:'🔥',cl:'icon-amber',t:'Rate limits and re-hydration',p:'Repeated pulls invite throttling, and every pull re-downloads pages you already had.'},
+ {i:'🎭',cl:'icon-rose',t:'Drifting grades',p:'One pipeline calls it tier B, another calls it tier C. Now the evidence level depends on who ran last.'}
+];
+function renderCache(on){
+  const set=on?cacheOn:cacheOff;
+  cacheGrid.innerHTML=set.map(c=>'<div class="card"><div class="ico '+c.cl+'">'+c.i+'</div><h3>'+c.t+'</h3><p>'+c.p+'</p></div>').join('');
+}
+renderCache(true);
+cacheSwitch.addEventListener('change',()=>{
+  const on=cacheSwitch.checked;
+  cacheState.textContent=on?'Cache-first ON':'Cache-first OFF';
+  cacheState.style.color=on?'var(--emerald)':'var(--rose)';
+  renderCache(on);
+  showToast(on?'Cache-first on — ask the cache before the internet.':'Cache-first off — every pipeline fetches for itself.');
+});
+
+// ---------- terminal replay ----------
+const termBody=document.getElementById('termBody');
+const script=[
+ '<span class="g"># 1 — ask the cache first (this is always step one)</span>\n<span class="c">$ python research_harvest.py get pubmed "menopause bone loss treatment"</span>\n<span class="o">… check manifest: last_run 2026-09-03 · freshness 30d · volatility stable</span>\n<span class="o">…/Research/harvest/pubmed/20260903-menopause-bone-loss-treatment.json</span>\n<span class="g">→ HIT. Fresh. Zero network calls. Go straight to synthesis.</span>',
+ '<span class="g"># 2 — a miss: new topic, no valid cache entry</span>\n<span class="c">$ python research_harvest.py get pubmed "BPC-157 AND (dog OR canine)"</span>\n<span class="o">no fresh harvest for pubmed::bpc-157 and dog or canine</span>\n<span class="w">exit 1  → MISS. Now we are allowed to fetch.</span>',
+ '<span class="g"># 3 — fetch once, through the API (not by scraping the site)</span>\n<span class="c">$ python research_harvest.py fetch pubmed "BPC-157 AND (dog OR canine)" --limit 25</span>\n<span class="o">esearch → 41 ids · esummary → verifying each record…</span>\n<span class="o">partial_failures: 0</span>\n<span class="o">wrote …/harvest/pubmed/20260905-bpc-157-and-dog-or-canine.json</span>\n<span class="g">→ cached for 30 days. Every pipeline now shares this.</span>',
+ '<span class="g"># 4 — a tool source: capture, then store into the same cache</span>\n<span class="c">$ python research_harvest.py store youtube "guest fasting insulin talk" ./capture.md</span>\n<span class="o">wrote …/harvest/youtube/20260906-…-fasting-insulin.md</span>\n<span class="g">→ same cache, same manifest, same freshness rules.</span>',
+ '<span class="g"># 5 — describe, grade, land, then rebuild the index</span>\n<span class="c">$ python collect_corpus.py --ns business-research</span>\n<span class="c">$ python embed_records.py --ns business-research</span>\n<span class="o">33,871 records · vectors match records ✓ · shard rebuilt</span>\n<span class="g">→ findable by meaning. Then the dashboard re-counts itself and stays quiet.</span>',
+ '<span class="g"># 6 — housekeeping: expire the volatile stuff, keep the stable</span>\n<span class="c">$ python research_harvest.py status</span>\n<span class="o">volatile: x 1d · reddit/news 2d · youtube/substack/web 3d</span>\n<span class="o">stable:   pubmed/arxiv/crossref/clinicaltrials 30d · dailymed/society 90d</span>\n<span class="c">$ python research_harvest.py prune --older 90</span>\n<span class="o">evicted expired raw files · manifest cleaned · index regenerated</span>\n<span class="g">→ the cache stays small, the brain stays current.</span>'
+];
+let tStep=0;
+function renderTerm(upto){
+  termBody.innerHTML=script.slice(0,upto).join('\n\n')+(upto<script.length?'\n<span class="cursor"></span>':'');
+  termBody.scrollTop=termBody.scrollHeight;
+}
+renderTerm(1);
+document.getElementById('termStep').addEventListener('click',()=>{tStep=Math.min(script.length,tStep+1);renderTerm(tStep);});
+document.getElementById('termReplay').addEventListener('click',()=>{tStep=1;renderTerm(1);});
+
+// ---------- semantic switch ----------
+const semGrid=document.getElementById('semGrid'),semSwitch=document.getElementById('semSwitch'),semState=document.getElementById('semState');
+const semOn=[
+ {i:'🧠',cl:'icon-violet',t:'"early-warning metabolic markers"',p:'Meaning-aware retrieval returns the fasting-insulin artifact — even though the phrase "early warning" never appears in the file. It matched because the <em>idea</em> matched.'},
+ {i:'🕸️',cl:'icon-cyan',t:'Finds the neighbours too',p:'It also surfaces related material — the metabolic persona notes, the lab comparison — because they sit near it in meaning-space.'}
+];
+const semOff=[
+ {i:'🔤',cl:'icon-slate',t:'"early-warning metabolic markers"',p:'Keyword-only retrieval finds nothing — the exact words are not in the note. It was filed under "fasting insulin".'}, 
+ {i:'🕳️',cl:'icon-rose',t:'Value stays locked in filenames',p:'You can only find what you already remember. Which means the value of the research depends on your memory — the exact problem the brain was supposed to solve.'}
+];
+function renderSem(on){
+  const set=on?semOn:semOff;
+  semGrid.innerHTML=set.map(c=>'<div class="card"><div class="ico '+c.cl+'">'+c.i+'</div><h3>'+c.t+'</h3><p>'+c.p+'</p></div>').join('');
+}
+renderSem(true);
+semSwitch.addEventListener('change',()=>{
+  const on=semSwitch.checked;
+  semState.textContent=on?'Meaning-aware retrieval ON':'Keyword-only retrieval';
+  semState.style.color=on?'var(--emerald)':'var(--amber)';
+  renderSem(on);
+  showToast(on?'Meaning-aware retrieval on — the index finds ideas, not just words.':'Keyword-only — you can only find what you already remember.');
+});
+
+// ---------- checklist ----------
+const boxes=[...document.querySelectorAll('#checklist input')],score=document.getElementById('score');
+function scoreIt(){
+  const n=boxes.filter(b=>b.checked).length;
+  score.textContent=n+' of '+boxes.length+' checked'+(n===boxes.length?' — you can build this ✔':'');
+}
+boxes.forEach(b=>b.addEventListener('change',()=>{scoreIt();if(b.checked)showToast('Noted: '+b.dataset.pt);}));
+scoreIt();
+</script>
+</body>
+</html>

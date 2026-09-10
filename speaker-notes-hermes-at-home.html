@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speaker notes — Hermes at Home | Presenter companion</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#ffffff; --border:#e3e7f0; --ink:#111827; --muted:#5b6472;
+    --accent:#0e7490; --accent2:#7c3aed; --amber:#b45309; --green:#15803d;
+    --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;line-height:1.55}
+  .wrap{max-width:900px;margin:0 auto;padding:40px 28px 80px}
+
+  header{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:26px}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+  header h1{font-size:30px;letter-spacing:-.5px;margin-bottom:6px}
+  header .sub{color:var(--muted);font-size:15px}
+
+  .meta{display:flex;gap:26px;flex-wrap:wrap;margin:20px 0 8px;font-size:13px;color:var(--muted)}
+  .meta b{color:var(--ink)}
+
+  .flow{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:30px}
+  .flow h2{font-size:15px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:12px}
+  .flow table{width:100%;border-collapse:collapse;font-size:13px}
+  .flow td{padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:top}
+  .flow td:first-child{font-family:var(--mono);white-space:nowrap;color:var(--accent);width:80px}
+  .flow tr:last-child td{border-bottom:none}
+  .tag{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:999px;white-space:nowrap}
+  .t-demo{background:#ecfeff;color:#155e75}.t-core{background:#f3e8ff;color:#6b21a8}
+  .t-short{background:#fef3c7;color:#92400e}.t-skip{background:#fee2e2;color:#991b1b}
+
+  .note{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin-bottom:16px;page-break-inside:avoid}
+  .note .head{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin-bottom:8px}
+  .note .n{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:1px}
+  .note h3{font-size:17px;font-weight:700}
+  .note .slant{color:var(--muted);font-size:13.5px;font-style:italic;margin-bottom:12px}
+  .cues{margin:6px 0 0;padding-left:20px}
+  .cues li{font-size:14px;margin-bottom:7px;color:var(--ink)}
+  .cues li::marker{color:var(--accent)}
+  .cues strong{color:var(--ink)}
+  .fact{font-family:var(--mono);font-size:12.5px;background:#f1f5f9;border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-top:12px;color:#0f172a}
+  .fact::before{content:"KEY FACTS  ";color:var(--amber);font-weight:700;letter-spacing:.5px}
+
+  .pickup{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:18px 22px;margin:28px 0 6px}
+  .pickup h2{font-size:15px;color:var(--amber);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+  .pickup ul{margin-left:20px;font-size:14px;color:var(--ink)}
+  .pickup li{margin-bottom:6px}
+  .print-only{display:none}
+  @media print{
+    body{background:#fff}
+    .note,.flow{break-inside:avoid;box-shadow:none}
+    .print-only{display:block}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Presenter companion · single voice · you ↔ medium-technical audience</div>
+    <h1>Hermes at Home — speaker notes</h1>
+    <div class="sub">The deck is <b>13 sections</b>. These notes give you a natural speaking track, the facts to land, and a stretch/keep-short flag per section. Read the cue, glance at the slide, speak your own sentence.</div>
+    <div class="meta">
+      <span><b>Format:</b> 25–30 min talk (or 45 with demos)</span>
+      <span><b>Audience:</b> medium technical — comfortable with "tool," "model," "automation"; not ML specialists</span>
+      <span><b>Voice:</b> confident, curious, honest about trade-offs. No internal jargon, no vendor name-dropping.</span>
+    </div>
+    <div class="pickup print-only"><strong>Print tip:</strong> use page setup &gt; margins &gt; narrow; this prints cleanly.</div>
+  </header>
+
+  <!-- TIMING FLOW -->
+  <div class="flow">
+    <h2>Suggested flow &amp; timing</h2>
+    <table>
+      <tr><td>0:00</td><td>Intros + "why I built this instead of using a SaaS chatbot" hook <span class="tag t-core">core</span></td></tr>
+      <tr><td>0:03</td><td>Sec 1 · The big idea <span class="tag t-core">core</span></td></tr>
+      <tr><td>0:07</td><td>Sec 2 · Architecture — click 1–2 layers live <span class="tag t-demo">demo</span></td></tr>
+      <tr><td>0:12</td><td>Sec 3 · Surfaces — hit the tab switch live <span class="tag t-demo">demo</span></td></tr>
+      <tr><td>0:16</td><td>Sec 4 · Profiles — the fleet table <span class="tag t-core">core</span></td></tr>
+      <tr><td>0:19</td><td>Sec 5 · Memory + Sec 6 · Retrieval — search filter demo <span class="tag t-demo">demo</span></td></tr>
+      <tr><td>0:24</td><td>Sec 7 · Automation + Sec 8 · Models — routing toggle demo <span class="tag t-demo">demo</span></td></tr>
+      <tr><td>0:28</td><td>Sec 9 · Privacy — the trust section, slow down here <span class="tag t-core">core</span></td></tr>
+      <tr><td>0:33</td><td>Sec 10 · How to begin — run the terminal demo live <span class="tag t-demo">demo</span></td></tr>
+      <tr><td>0:38</td><td>Sec 11 · Takeaways — open to checklist, invite people to follow along <span class="tag t-core">core</span></td></tr>
+      <tr><td>0:40</td><td>Sec 12 · The whole system as one map — fling a bubble, click a hub, toggle a chip <span class="tag t-demo">demo · wow</span></td></tr>
+      <tr><td>0:43</td><td>Sec 13 · Live site — raise the QR, give the URL <span class="tag t-short">short</span></td></tr>
+      <tr><td>0:45</td><td>Q&amp;A</td></tr>
+    </table>
+    <div style="font-size:12px;color:var(--muted);margin-top:8px">If short on time: trim Sec 7 (Automation) to one line and hold the terminal demo to 30 seconds.</div>
+  </div>
+
+  <!-- SECTION NOTES -->
+  <div class="note">
+    <div class="head"><span class="n">01 · The big idea</span><span class="tag t-core">core</span></div>
+    <h3>One agent isn't enough — so I run a fleet that feels like one.</h3>
+    <div class="slant">Key transfer: from "chat with a website" to "delegate to a capable assistant."</div>
+    <ul class="cues">
+      <li><strong>Open the frame:</strong> "This is about turning an open-source AI <em>assistant</em> into something that runs my household — not a product I pay for."</li>
+      <li><strong>Set the bar low:</strong> "You don't need ML expertise to follow — just curiosity about how a tool becomes a teammate."</li>
+      <li><strong>Name the four things that matter:</strong> model-agnostic, persistent memory, real tools, learns skills.</li>
+      <li><strong>End with the mindset shift</strong> — pause, let it land.</li>
+    </ul>
+    <div class="fact">Four pillars: model-agnostic · persistent memory · real tools · learns skills</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">02 · Architecture</span><span class="tag t-demo">demo</span></div>
+    <h3>Six layers, all on one machine.</h3>
+    <div class="slant">The mental model you'd hand anyone inheriting the system.</div>
+    <ul class="cues">
+      <li><strong>Walk top-down quickly</strong> — Surfaces → Orchestration → Memory → Retrieval → Action → Governance.</li>
+      <li><strong>Click one or two layers live</strong> so they see it's not a static diagram.</li>
+      <li><strong>Emphasize the bottom:</strong> "All six layers, on one PC. Not a cloud data center."</li>
+      <li><strong>Humor line:</strong> "The whole architecture fits on this laptop — the 'server room' is a desk."</li>
+    </ul>
+    <div class="fact">6 layers deployed on a single Windows box · 20 active agent profiles across them</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">03 · Surfaces</span><span class="tag t-demo">demo</span></div>
+    <h3>Four ways to talk to the same agent.</h3>
+    <div class="slant">Same brain, same memory, same tools — different door.</div>
+    <ul class="cues">
+      <li><strong>Lead with what maps to their life:</strong> "Desktop for deep work, Telegram when you're out, terminal for heavy lifting."</li>
+      <li><strong>Hit the tab switch live</strong> — it's the one interaction that reads instantly as "real."</li>
+      <li><strong>Surprise hook:</strong> "Telegram isn't just chat — it has the same full tools as everything else."</li>
+      <li><strong>Keep the dashboard brief</strong> — it's admin; don't let it eat time.</li>
+    </ul>
+    <div class="fact">Desktop · Terminal · Telegram · Web dashboard — one core, four doors</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">04 · Profiles</span><span class="tag t-core">core</span></div>
+    <h3>A fleet of focused agents, not one generalist.</h3>
+    <div class="slant">"The people of the system" — each with identity, skills, models, permissions.</div>
+    <ul class="cues">
+      <li><strong>Make it human:</strong> a personal assistant, a business agent, per-person agents, and specialists each owning one job.</li>
+      <li><strong>Land the principle:</strong> least privilege — no agent gets more access than its job.</li>
+      <li><strong>Reassure on safety:</strong> "A specialist having a bad day can't take down the whole house."</li>
+    </ul>
+    <div class="fact">20 active profiles · per-person + business + specialist councils (health, product-imagery)</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">05 · Memory</span><span class="tag t-core">core</span></div>
+    <h3>It remembers me — without a database to babysit.</h3>
+    <div class="slant">Memory is what separates a tool from an assistant.</div>
+    <ul class="cues">
+      <li><strong>Distill to three:</strong> who you are, lessons learned, searchable history.</li>
+      <li><strong>"A skill is memory too"</strong> — procedures get packaged and reused, not relearned.</li>
+      <li><strong>Story with a principle:</strong> I ran a dedicated memory server, then replaced it with built-in native memory because <em>simplicity wins</em>. Say it plainly.</li>
+    </ul>
+    <div class="fact">Persistent profile + readable notes + searchable session history. No extra service to keep alive.</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">06 · Retrieval &amp; the second brain</span><span class="tag t-demo">demo</span></div>
+    <h3>Two searches, one brain.</h3>
+    <div class="slant">Everything I know lives as plain-text notes; two engines reach it.</div>
+    <ul class="cues">
+      <li><strong>Fast local search</strong> = "where is that file" in milliseconds.</li>
+      <li><strong>Semantic retrieval</strong> = ask by meaning, get relevant notes even when the words differ.</li>
+      <li><strong>Type in the filter live</strong> ("semantic") so they see search narrow the cards.</li>
+      <li><strong>Payoff:</strong> notes are portable plain text — no lock-in, easy to back up and share.</li>
+    </ul>
+    <div class="fact">Markdown = source of truth · search stays on the machine, OneDrive-safe</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">07 · Automation</span><span class="tag t-short">keep short</span></div>
+    <h3>It runs on its own schedule.</h3>
+    <div class="slant">The underrated feature: it acts on timers and boards, not just when asked.</div>
+    <ul class="cues">
+      <li><strong>Scheduled tasks:</strong> weekly digests, reports, reminders — like a smarter cron.</li>
+      <li><strong>Kanban boards:</strong> ongoing work organized into boards, routed to the right agent.</li>
+      <li><strong>One strong line:</strong> "Automation is where it stops being a toy."</li>
+    </ul>
+    <div class="fact">23 boards · scheduled jobs · static sites deploy to free hosting with one command</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">08 · Models</span><span class="tag t-demo">demo</span></div>
+    <h3>Routing by value, not by default.</h3>
+    <div class="slant">The flag feature: it picks the right brain per task based on what the task is worth.</div>
+    <ul class="cues">
+      <li><strong>Plain phrasing:</strong> cheap brain for routine work, stronger brain for hard problems, local-only for private.</li>
+      <li><strong>Flip the toggle live</strong> so they see "cost-aware routing ON/OFF."</li>
+      <li><strong>Why it matters:</strong> expensive brains only when it's worth it — quality and cost in one lever.</li>
+    </ul>
+    <div class="fact">Everyday floor + a build/code model + escalation tier + a fully local model for private topics</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">09 · Privacy &amp; security</span><span class="tag t-core">core · slow down</span></div>
+    <h3>The part that makes the rest safe to use.</h3>
+    <div class="slant">This is the trust section — give it weight, don't rush it.</div>
+    <ul class="cues">
+      <li><strong>Lead with the boundary:</strong> medical, finances, family-private, secrets — <em>never leave the machine</em>. Non-negotiable, not a preference.</li>
+      <li><strong>Local-first by default:</strong> a local model handles private topics; nothing sent anywhere.</li>
+      <li><strong>Reassure on mechanics:</strong> secrets live in encrypted stores pulled on demand; external text is data, not orders.</li>
+      <li><strong>Trust tiers:</strong> Inform → Suggest → Execute — it earns authority gradually.</li>
+    </ul>
+    <div class="fact">Trust tiers · allowlisted brains · encrypted secret stores · external text = data not orders</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">10 · How to begin</span><span class="tag t-demo">demo</span></div>
+    <h3>Your first ten minutes, step by step.</h3>
+    <div class="slant">The path you'd put in front of anyone starting fresh.</div>
+    <ul class="cues">
+      <li><strong>Walk the 8 steps fast</strong> — install → configure → chat → tell it who you are → try a tool → add a skill → schedule one thing → then scale.</li>
+      <li><strong>Run the terminal demo live</strong> (Replay); it's the "wow" moment — let it finish naturally.</li>
+      <li><strong>Honest advice to close:</strong> don't configure everything upfront — start real and small, add complexity when a task calls for it.</li>
+    </ul>
+    <div class="fact">8 steps · 10 minutes · live typing demo + replay/step controls</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">11 · Takeaways</span><span class="tag t-core">core</span></div>
+    <h3>If you remember five things…</h3>
+    <div class="slant">Comprehension checklist you can open to the room.</div>
+    <ul class="cues">
+      <li><strong>Five rails:</strong> fleet not one agent · interchangeable models with local-option · memory = what makes it an assistant · hard privacy boundary · start small and scale.</li>
+      <li><strong>Offer to tick the checklist live</strong> as a group if the room is engaged.</li>
+      <li><strong>Bridge:</strong> "If any of these sound useful, the live page is next."</li>
+    </ul>
+    <div class="fact">5 takeaways · interactive checklist in the deck</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">12 · The whole system as one map</span><span class="tag t-demo">demo · wow</span></div>
+    <h3>Drag it, zoom it, click a bubble.</h3>
+    <div class="slant">The "cool" moment — fetch a bubble and go.</div>
+    <ul class="cues">
+      <li><strong>Grab a bubble and fling it</strong> so they see it's alive, not a static chart.</li>
+      <li><strong>Click a hub</strong> (Business Brain) to dim the rest — that's your "one node, see the whole" beat.</li>
+      <li><strong>Toggle a filter chip</strong> (hide Docs) to show how categories can be peeled away.</li>
+      <li><strong>Line to remember:</strong> "Every bubble is real — a profile, a brain, a live site, a tool."</li>
+    </ul>
+    <div class="fact">35 nodes in 6 categories · click-to-focus · drag/zoom/pan · live filter chips + jump dropdown</div>
+  </div>
+
+<div class="note">
+    <div class="head"><span class="n">13 · Live site</span><span class="tag t-short">short</span></div>
+    <h3>Scan to explore it live.</h3>
+    <div class="slant">Close on a path forward, not a "thanks for listening."</div>
+    <ul class="cues">
+      <li><strong>Raise the QR</strong>, read the URL aloud.</li>
+      <li><strong>One-line CA:</strong> "Everything you saw is in your hand — no signup, on free hosting."</li>
+      <li><strong>Honest note:</strong> "This public copy is scrubbed — it's the showcase, not my personal machine."</li>
+      <li><strong>Call to action:</strong> invite them to explore and bring questions to Q&amp;A.</li>
+    </ul>
+    <div class="fact">URL: blue-beach-020ffb00f.6.azurestaticapps.net · Azure Static Web Apps (free)</div>
+  </div>
+
+  <div class="pickup">
+    <h2>Five things to nail before you present</h2>
+    <ul>
+      <li>Open the deck once, click through <em>every</em> control, so nothing surprises you live.</li>
+      <li>Practice the terminal demo — let it finish; the "wow" needs the full sentence.</li>
+      <li>Memorize the three-prong honesty line: local-first, evidence-backed, inference-vs-fact.</li>
+      <li>Keep the QR slide ready near the end; test it scans from a phone before showtime.</li>
+      <li>Know your time margin — Automation can be a single line if you're running long.</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speaker notes — The Research Framework | Presenter companion</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#ffffff; --border:#e3e7f0; --ink:#111827; --muted:#5b6472;
+    --accent:#0e7490; --accent2:#7c3aed; --amber:#b45309; --green:#15803d;
+    --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;line-height:1.55}
+  .wrap{max-width:900px;margin:0 auto;padding:40px 28px 80px}
+
+  header{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:26px}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+  header h1{font-size:30px;letter-spacing:-.5px;margin-bottom:6px}
+  header .sub{color:var(--muted);font-size:15px}
+
+  .meta{display:flex;gap:26px;flex-wrap:wrap;margin:20px 0 8px;font-size:13px;color:var(--muted)}
+  .meta b{color:var(--ink)}
+
+  .flow{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:30px}
+  .flow h2{font-size:15px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:12px}
+  .flow table{width:100%;border-collapse:collapse;font-size:13px}
+  .flow td{padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:top}
+  .flow td:first-child{font-family:var(--mono);white-space:nowrap;color:var(--accent);width:80px}
+  .flow tr:last-child td{border-bottom:none}
+  .tag{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:999px;white-space:nowrap}
+  .t-demo{background:#ecfeff;color:#155e75}.t-core{background:#f3e8ff;color:#6b21a8}
+  .t-short{background:#fef3c7;color:#92400e}.t-skip{background:#fee2e2;color:#991b1b}
+
+  .note{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin-bottom:16px;page-break-inside:avoid}
+  .note .head{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin-bottom:8px}
+  .note .n{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:1px}
+  .note h3{font-size:17px;font-weight:700}
+  .note .slant{color:var(--muted);font-size:13.5px;font-style:italic;margin-bottom:12px}
+  .cues{margin:6px 0 0;padding-left:20px}
+  .cues li{font-size:14px;margin-bottom:7px;color:var(--ink)}
+  .cues li::marker{color:var(--accent)}
+  .cues strong{color:var(--ink)}
+  .fact{font-family:var(--mono);font-size:12.5px;background:#f1f5f9;border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-top:12px;color:#0f172a}
+  .fact::before{content:"KEY FACTS  ";color:var(--amber);font-weight:700;letter-spacing:.5px}
+
+  .pickup{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:18px 22px;margin:28px 0 6px}
+  .pickup h2{font-size:15px;color:var(--amber);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+  .pickup ul{margin-left:20px;font-size:14px;color:var(--ink)}
+  .pickup li{margin-bottom:6px}
+  .qa{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:18px 22px;margin:26px 0 6px}
+  .qa h2{font-size:15px;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .qa .pair{margin-bottom:12px}
+  .qa .q{font-weight:700;font-size:14px}
+  .qa .a{font-size:13.8px;color:var(--muted)}
+  .qa .a b{color:var(--ink)}
+  .print-only{display:none}
+  @media print{
+    body{background:#fff}
+    .note,.flow{break-inside:avoid;box-shadow:none}
+    .print-only{display:block}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Presenter companion · single voice · you ↔ medium-technical audience</div>
+    <h1>The Research Framework — speaker notes</h1>
+    <div class="sub">The deck is <b>12 sections</b>. These notes give you a natural speaking track, the numbers to land, and a stretch/keep-short flag per section. Read the cue, glance at the slide, say it in your own words.</div>
+    <div class="meta">
+      <span><b>Format:</b> 20–25 min talk (or 35 with the interactives)</span>
+      <span><b>Audience:</b> medium technical — comfortable with "tool," "model," "automation"; not ML specialists</span>
+      <span><b>Voice:</b> confident, curious, honest about trade-offs. No internal jargon, no vendor name-dropping.</span>
+    </div>
+    <div class="pickup print-only"><strong>Print tip:</strong> use page setup &gt; margins &gt; narrow; this prints cleanly.</div>
+  </header>
+
+  <!-- TIMING FLOW -->
+  <div class="flow">
+    <h2>Suggested flow &amp; timing</h2>
+    <table>
+      <tr><td>0:00</td><td>Hook: "everyone can ask an AI a question — almost nobody can keep the answer" <span class="tag t-core">core</span></td></tr>
+      <tr><td>0:02</td><td>Sec 1 · The problem — the four failure modes <span class="tag t-core">core</span></td></tr>
+      <tr><td>0:05</td><td>Sec 2 · The whole loop — click 2–3 stages live <span class="tag t-demo">demo</span></td></tr>
+      <tr><td>0:09</td><td>Sec 3 · Intake — four doors + the real schedule <span class="tag t-core">core</span></td></tr>
+      <tr><td>0:12</td><td>Sec 4 · Routing — run the routing demo (do the FAIL case) <span class="tag t-demo">demo</span></td></tr>
+      <tr><td>0:16</td><td>Sec 5 · Sources — the source explorer + filter <span class="tag t-demo">demo · centrepiece</span></td></tr>
+      <tr><td>0:21</td><td>Sec 6 · Describing — read the real artifact header aloud <span class="tag t-core">core</span></td></tr>
+      <tr><td>0:24</td><td>Sec 7 · Freshness — toggle cache-first, step the CLI replay <span class="tag t-demo">demo</span></td></tr>
+      <tr><td>0:28</td><td>Sec 8 · Landing it — the sequence that makes it stick <span class="tag t-core">core</span></td></tr>
+      <tr><td>0:31</td><td>Sec 9 · Asking it — meaning vs keyword toggle <span class="tag t-demo">demo</span></td></tr>
+      <tr><td>0:34</td><td>Sec 10 · Guardrails — slow down here, it's the trust section <span class="tag t-core">core</span></td></tr>
+      <tr><td>0:37</td><td>Sec 11 · Numbers — let the counters run <span class="tag t-short">short</span></td></tr>
+      <tr><td>0:39</td><td>Sec 12 · Takeaways — open the checklist to the room <span class="tag t-core">core</span></td></tr>
+      <tr><td>0:41</td><td>Q&amp;A</td></tr>
+    </table>
+    <div style="font-size:12px;color:var(--muted);margin-top:8px">If short on time: cut Sec 11 (Numbers) to a single sentence — "33,000 research records, one cache, still attributed" — and hold the source explorer, which is the section people remember.</div>
+  </div>
+
+  <!-- SECTION NOTES -->
+  <div class="note">
+    <div class="head"><span class="n">01 · The problem</span><span class="tag t-core">core</span></div>
+    <h3>Collecting is easy. Keeping is the hard part.</h3>
+    <div class="slant">Key transfer: from "I researched that once" to "I can still prove it today."</div>
+    <ul class="cues">
+      <li><strong>Open with the pain everyone recognizes:</strong> "You find a great paper or a great podcast, you save it somewhere, and six months later you can't find it, you can't tell whether it was a mouse study, and you can't cite it. The work was done and the value is gone."</li>
+      <li><strong>Name the four failure modes</strong> as you gesture at the cards: fetch-copy-forget, everything gets re-fetched, evidence gets flattened, and research has no destination.</li>
+      <li><strong>Land the design goal</strong> — this is the thesis of the whole talk: "Separate <em>fetching</em> from <em>thinking</em>. Describe every source before you trust it. And make every piece of research land somewhere specific — or stop."</li>
+      <li><strong>Set the stakes:</strong> "This isn't about being tidy. Flattening the evidence is how a mouse study becomes a product claim."</li>
+    </ul>
+    <div class="fact">4 failure modes · 3 design rules · 95 characters of thesis: fetch ≠ synthesize</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">02 · The whole loop</span><span class="tag t-demo">demo</span></div>
+    <h3>The framework, end to end.</h3>
+    <div class="slant">Give them the map before the territory — otherwise the detail feels arbitrary.</div>
+    <ul class="cues">
+      <li><strong>Say the meta-instruction out loud:</strong> "Ten stages. They're clickable — I'll open a couple as we go."</li>
+      <li><strong>Walk the labels fast, top-left to bottom-right:</strong> request arrives → intake triage → route to a board → cache check → harvest → describe &amp; grade → synthesize → land it → index &amp; embed → report &amp; gate.</li>
+      <li><strong>Click stages 4, 6 and 8 as you narrate</strong> — cache check, describe &amp; grade, land it. Those are the three that make the framework unusual; the rest are plumbing everyone expects.</li>
+      <li><strong>Auto-play is your friend if you're running long:</strong> hit ▶ and let it advance while you talk over it.</li>
+      <li><strong>One line to remember:</strong> "Same path whether I typed a question, a weekly job fired, or I dropped in a link."</li>
+    </ul>
+    <div class="fact">10 stages · clickable deep-dive panel · prev / next / auto-play · identical path for ad-hoc + scheduled work</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">03 · Intake</span><span class="tag t-core">core</span></div>
+    <h3>Four doors, one intake.</h3>
+    <div class="slant">The point: intake is a funnel, not a free-for-all.</div>
+    <ul class="cues">
+      <li><strong>Name the four doors:</strong> I ask in plain language · a scheduled pipeline fires · I drop in a link or an artifact · a follow-up from the last run.</li>
+      <li><strong>Emphasize that all four converge:</strong> "Whatever the door, the same three things happen — classify it, run it through the gate, name a destination. Nothing gets fetched before the gate passes."</li>
+      <li><strong>The schedule table is the credibility slide:</strong> point at two or three real cadences — weekly menopause, weekly companion-animal, daily peptide signal, nightly competitor dispatch. "These aren't aspirations; this is what's actually firing."</li>
+      <li><strong>Answer the unasked question:</strong> "Why scheduled instead of on-demand? Because 'current' is a maintenance property. A topic you research once is stale in a month."</li>
+    </ul>
+    <div class="fact">4 intake doors · 8 live recurring jobs · cadences verified against the scheduler</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">04 · Routing</span><span class="tag t-demo">demo</span></div>
+    <h3>Named boards. Never a default pile.</h3>
+    <div class="slant">This is where most research systems quietly die — and where this one differs.</div>
+    <ul class="cues">
+      <li><strong>Lead with the rule:</strong> "Work is assigned to a <em>named</em> board by domain. There is no default bucket — because a default bucket is where research goes to die."</li>
+      <li><strong>Run the routing demo live and do the FAIL case deliberately.</strong> Click "mega-audience episode, celebrity guest, no overlap." The room expects it to be processed; showing it being <b>skipped</b> is the most convincing 20 seconds of the talk.</li>
+      <li><strong>Then the escalation case:</strong> two sources disagree on a dose → it is not auto-resolved by whoever summarised first. It goes to a stronger model for adversarial review. That's a decision, not a data problem.</li>
+      <li><strong>Cost routing in one line:</strong> "The model follows the job — cheap models for bulk harvesting, a strong model for conflicts."</li>
+      <li><strong>Boards as honesty:</strong> "Every board reports done, blocked and open. A blocked research card is a real signal, not noise."</li>
+    </ul>
+    <div class="fact">Named-board rule · 6 routing cases · fail-closed gate · blocked counts are live, not decorative</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">05 · Sources — what we collect &amp; how each is described</span><span class="tag t-demo">demo · centrepiece</span></div>
+    <h3>Every source has a method — not a vibe.</h3>
+    <div class="slant">If they remember one section, make it this one. It's the most transferable idea in the deck.</div>
+    <ul class="cues">
+      <li><strong>Frame the registry as the answer to a frustration:</strong> "We used to improvise. Someone would try to scrape a site and discover it's bot-walled, and we'd lose an hour. Now every source is <em>described once</em>: what type of research it's for, exactly how to get data out of it, what it costs, and its known traps."</li>
+      <li><strong>Click through the six tabs</strong> — primary literature, regulatory, institutions, community, the biohacking ecosystem, policy. Don't read them; show the range.</li>
+      <li><strong>Then use the filter</strong> — type something like <span style="font-family:var(--mono)">dosing</span> or <span style="font-family:var(--mono)">forum</span> and let it narrow. "It's a searchable catalog, not a document."</li>
+      <li><strong>Tell two trap stories — they're memorable:</strong> "One community site is scrape-walled, so direct extraction simply fails; we take search snippets and say so out loud rather than inventing comment content. And academic search engines are bot-walled — we use snippets and verify against the actual paper. We only know that because it's written down."</li>
+      <li><strong>Land the design insight:</strong> "Nobody is allowed to improvise a fetch. One description means every pipeline inherits the same method and the same traps."</li>
+      <li><strong>Ecosystem tab:</strong> "Under the generic categories sits a named roster — who they are, what they're actually good for, their tier, and their commercial conflict. A channel is not a trusted source."</li>
+    </ul>
+    <div class="fact">6 source categories · ~30 described sources + a named creator/clinician roster · live keyword filter · verified quarterly for dead handles</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">06 · Describing</span><span class="tag t-core">core</span></div>
+    <h3>A source isn't "saved." It's described, graded, and tagged.</h3>
+    <div class="slant">The artifact header is the proof that section 5 isn't just a nice idea.</div>
+    <ul class="cues">
+      <li><strong>Read a few lines of the real header aloud</strong> — source, URL, who spoke, when captured, how ingested, and the classification.</li>
+      <li><strong>Then the money quote:</strong> "Look at what's <em>inside the file</em>: the host owns the supplement brand running in the ads, and the guest is a resident, not board-certified. That's written in the artifact — so no downstream step can accidentally launder a sponsor's ad into a product claim."</li>
+      <li><strong>Tiers, in plain language:</strong> A is peer-reviewed or an official label and it's the only tier allowed to carry a product claim · B is a credentialed clinician · C is community, creator or grey-market — hypothesis-generating only, never product proof.</li>
+      <li><strong>The verification rule</strong> — this is the hard one, say it slowly: "A record with no verifiable identifier — a real paper ID or link — <b>does not exist</b> as far as the framework is concerned. It isn't 'low confidence'. It doesn't exist."</li>
+      <li><strong>Then the traps, and why encoding them matters:</strong> short chemical names collide with unrelated acronyms and genes, so every hit gets checked against the actual paper — that's our biggest source of junk. And a rodent study may never be labelled or implied as a canine or human trial. Every record carries its study model.</li>
+    </ul>
+    <div class="fact">Every artifact: source · speaker · date · ingest method · classification · tier · model tag · compliance block</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">07 · Freshness &amp; the shared cache</span><span class="tag t-demo">demo</span></div>
+    <h3>Fetch once. Reuse everywhere.</h3>
+    <div class="slant">The economics section — this is what made the whole thing affordable.</div>
+    <ul class="cues">
+      <li><strong>State the mechanism first:</strong> "One cache, shared by every pipeline. Before anything fetches, it asks the cache. A source is only re-fetched when its freshness window has genuinely expired."</li>
+      <li><strong>Flip the cache-first toggle off</strong> and read what appears: five separate efforts pulling the same query, hitting rate limits, and — worst — grading the same source differently. "Now the evidence level depends on who ran last."</li>
+      <li><strong>Volatility windows</strong> — the insight to land: "A social post from an hour ago and an official drug label are not the same kind of fact. Treating them with the same expiry is how you end up citing a deleted post. So: volatile sources expire in one to three days; the literature in thirty; labels in ninety."</li>
+      <li><strong>Step the CLI replay live</strong> — get → miss → fetch → store → embed → prune. Pause on the first one: "A cache hit means zero network calls. That's the whole trick."</li>
+      <li><strong>Honest detail if asked:</strong> the fetcher retries rate limits with backoff, and partial failure is recorded rather than hidden.</li>
+    </ul>
+    <div class="fact">1 shared cache · volatile 1–3 days · literature 30 days · labels &amp; societies 90 days · 6 API-backed sources + a documented method for the rest</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">08 · Landing it</span><span class="tag t-core">core</span></div>
+    <h3>A harvest card marked "done" is not finished.</h3>
+    <div class="slant">The question everyone asks about automation, answered bluntly.</div>
+    <ul class="cues">
+      <li><strong>Admit the failure mode out loud:</strong> "The question I had to answer for myself was: what actually happens to the data after the research? Because it's easy to build a machine that hoards files."</li>
+      <li><strong>Walk the eight steps fast</strong>, then slow down on step 2, the one that matters: "Name <em>one</em> destination. If it can't name one, it stops and asks me. It does not 'just index it.'"</li>
+      <li><strong>Step 4 in plain words:</strong> "Synthesizing means writing the <em>claim</em> — not dumping a transcript. Raw cache is a cache. Cache is not the brain."</li>
+      <li><strong>The permission-to-refuse ribbon</strong> — a favourite moment for audiences: "The pipeline is explicitly allowed to push back. It can say 'this is a duplicate,' 'this is a vanity scrape,' 'this has no home.' A system that can never say no just produces more noise, faster."</li>
+    </ul>
+    <div class="fact">8-step landing sequence · unknown destination → human gate, stop · cache ≠ brain</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">09 · Asking it things</span><span class="tag t-demo">demo</span></div>
+    <h3>The output is a brain you can query, not a folder you dig through.</h3>
+    <div class="slant">Payoff section — everything before this existed to make this work.</div>
+    <ul class="cues">
+      <li><strong>Point at the shard table:</strong> "This is where the research actually lives once it's filed — sorted by topic, with personal notes deliberately in a separate shard that never mixes into business material."</li>
+      <li><strong>Explain why it's split:</strong> "Personal and business indexes are separated on purpose, and the index files live on a local-only path. That boundary is the reason I can let an automated system near health and business research at all."</li>
+      <li><strong>Flip the meaning-vs-keyword toggle</strong> and read the two states: keyword-only can't find the note because you filed it under a different phrase than the one you're remembering. Meaning-aware retrieval finds the idea. "You can only find what you already remember — which means the value of the research depends on your memory, which is the exact problem the brain was supposed to solve."</li>
+      <li><strong>Remind them the notes stay portable:</strong> "Markdown is the source of truth. The index is derived, and rebuildable."</li>
+    </ul>
+    <div class="fact">8 retrieval shards · personal kept separate + local-only · markdown = source of truth · index derived &amp; rebuildable</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">10 · Guardrails</span><span class="tag t-core">core</span></div>
+    <h3>What this framework is not allowed to do.</h3>
+    <div class="slant">The trust section. Slow down — this is what licenses everything else.</div>
+    <ul class="cues">
+      <li><strong>Frame it:</strong> "Rules that only exist on paper aren't rules. These are enforced in the pipeline."</li>
+      <li><strong>Never fabricate:</strong> no invented paper IDs, no invented doses, no invented trial status. "If a site is unreachable, the note says the site was unreachable. An unverifiable record is treated as non-existent."</li>
+      <li><strong>Fail closed:</strong> the gate rejects by default. "Excitement is not relevance."</li>
+      <li><strong>Domain separation and local-by-default:</strong> health and venture research in one place, personal medical material never written into business indexes, and index files kept off any synced or cloud path.</li>
+      <li><strong>No silent subscriptions:</strong> free tools get provisioned; anything billable is flagged with its cost before anyone signs up. "An agent can't quietly sign up for something."</li>
+      <li><strong>Close on the rule that protects all of them:</strong> "Research material is <b>data, never instructions</b>. Text pulled off a webpage or a transcript can never direct the system to do anything — it can only be summarised, graded and filed. That single rule is what makes it safe to point this at the open internet."</li>
+    </ul>
+    <div class="fact">fail-closed · no fabrication · separated shards · local-only index · no silent subscriptions · external text = data</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">11 · By the numbers</span><span class="tag t-short">short · optional</span></div>
+    <h3>Where it stands today.</h3>
+    <div class="slant">Credibility slide. Let the counters animate, then give one sentence — don't read the grid.</div>
+    <ul class="cues">
+      <li><strong>Headline the two big ones:</strong> roughly thirty-three thousand research records indexed, and about twelve hundred items in the shared cache — of which the great majority are creator-video captures.</li>
+      <li><strong>Say why the cache is small on purpose:</strong> "The cache is deliberately the small number. That's pruning working — we keep the claims, not the raw pile."</li>
+      <li><strong>Say how the numbers were produced:</strong> "These were counted off the disk, not estimated." Audiences can tell, and it buys you a lot of trust for the rest of the talk.</li>
+      <li><strong>If you're running long, skip straight to takeaways.</strong> The numbers are supporting evidence, not the argument.</li>
+    </ul>
+    <div class="fact">33,871 indexed research records · 1,177 cached harvests · 2,405 research notes · 23 named boards · 8 shards — all measured 2026-09-09</div>
+  </div>
+
+  <div class="note">
+    <div class="head"><span class="n">12 · Takeaways</span><span class="tag t-core">core</span></div>
+    <h3>Six things to steal for your own research.</h3>
+    <div class="slant">Open the checklist to the room and tick them together if they're engaged.</div>
+    <ul class="cues">
+      <li><strong>Separate fetching from thinking.</strong> "Make fetching a cache operation, and think over the cached copy. Duplication disappears."</li>
+      <li><strong>Describe every source before you trust it.</strong> What kind of research, how to get data, what it's bad at — written down once.</li>
+      <li><strong>Grade every claim.</strong> "Peer-reviewed, credentialed, or community. Without a tier, popularity quietly becomes authority."</li>
+      <li><strong>Route to a named destination — or stop.</strong> "The most underrated rule on this list. Research with no destination is a hobby, not a function."</li>
+      <li><strong>Give each source a freshness window.</strong> "A post and a label don't expire at the same speed."</li>
+      <li><strong>Let the system push back.</strong> "Permission to refuse low-value work is what keeps an automated pipeline worth reading a year later."</li>
+      <li><strong>Bridge to Q&amp;A:</strong> "Notice none of those six needed my specific tooling. Four of them are habits."</li>
+    </ul>
+    <div class="fact">6 takeaways · interactive checklist scores itself · 4 of the 6 are habits, not software</div>
+  </div>
+
+  <div class="qa">
+    <h2>Likely questions — and honest answers</h2>
+    <div class="pair"><div class="q">"Isn't this just RAG?"</div><div class="a">Partly — retrieval is one stage of ten. What's different is everything <em>around</em> it: <b>where the material comes from</b>, <b>how it's graded</b>, and <b>where it's required to land</b>. Retrieval over an undescribed pile just gives you confident answers you can't audit.</div></div>
+    <div class="pair"><div class="q">"What happens when it's wrong?"</div><div class="a">Two answers. Mechanically: unverifiable records are refused, and trial status is re-checked before anything is left marked "ongoing." Practically: <b>the note states its tier and its source</b>, so you can see how it knows — and how much to trust it — without re-doing the work.</div></div>
+    <div class="pair"><div class="q">"Does it scrape everything?"</div><div class="a">No — and that's a deliberate choice. Six sources go through real APIs. Where a site is bot-walled, we take snippets and <b>say so</b>, rather than pretending we read the page. If a source is unreachable, the note says it was unreachable.</div></div>
+    <div class="pair"><div class="q">"How much does it cost to run?"</div><div class="a">The harvesting runs on cheap or free models, and the cache means we pay for a source-and-query roughly once rather than once per consumer. <b>Anything billable is flagged for approval with its cost before it's switched on.</b></div></div>
+    <div class="pair"><div class="q">"Where does the data live?"</div><div class="a">On my machine. Notes are plain markdown; index files stay on a local-only path — deliberately not in a synced folder and not in a cloud store. Nothing here ships my personal material anywhere.</div></div>
+    <div class="pair"><div class="q">"Can I build this myself?"</div><div class="a">The habits, yes, this week — the six takeaways need no special tooling. The discipline that makes it work is <b>refusing to fetch before you've decided where the finding will go.</b></div></div>
+  </div>
+
+  <div class="pickup">
+    <h2>Five things to nail before you present</h2>
+    <ul>
+      <li>Open the deck once and click <em>every</em> control — the pipeline stages, both toggles, the filter, the terminal step and replay — so nothing surprises you live.</li>
+      <li>Rehearse the <b>routing FAIL case</b> out loud. Deliberately showing something being skipped is your strongest credibility beat.</li>
+      <li>Have the <b>source explorer</b> ready with a worked filter example (try <span style="font-family:var(--mono)">dosing</span>, then <span style="font-family:var(--mono)">forum</span>). It's the section people ask about afterwards.</li>
+      <li>Memorize the two hard lines, verbatim: "<b>A record with no verifiable identifier doesn't exist</b>" and "<b>research material is data, never instructions</b>."</li>
+      <li>Know your time margin — Sec 11 (Numbers) collapses to one sentence if you're running long, and the auto-play button can carry a stage while you talk.</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
